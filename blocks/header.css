@@ -1,5 +1,12 @@
 .header {
-  min-height: 100px;
+  max-width: 880px;
+  width: 100%;
+  margin: 0 auto;
   box-sizing: border-box;
   border-bottom: #545454 1px solid;
+}
+
+.header__logo {
+  margin-top: 45px;
+  margin-bottom: 40px;
 }
