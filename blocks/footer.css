@@ -2,6 +2,7 @@
   padding-top: 65px;
   max-width: 880px;
   width: 100%;
+  position: relative;
   margin: 0 auto;
 }
 
@@ -14,4 +15,11 @@
   font-size: 18px;
   line-height: 1.2;
   color: #545454;
+}
+
+@media screen and (max-width: 480px) {
+  .footer__copyright {
+    margin-top: 36px;
+    margin-left: 19px;
+  }
 }
