@@ -45,6 +45,7 @@
 
 .profile__edit-button:hover {
   opacity: 0.6;
+  cursor: pointer;
 }
 
 .profile__subtitle {
@@ -72,6 +73,7 @@
 
 .profile__add-button:hover {
   opacity: 0.6;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 770px) {
@@ -110,6 +112,8 @@
   }
   .profile__edit-button {
     margin: 0;
+    width: 18px;
+    height: 18px;
   }
 
   .profile__subtitle {
