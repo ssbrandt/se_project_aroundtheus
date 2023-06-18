@@ -35,7 +35,7 @@
 .profile__edit-button {
   background: transparent url(../images/pencil-icon.svg) center no-repeat;
   grid-area: "edit";
-  border: #545454 1px solid;
+  border: #fff 1px solid;
   width: 24px;
   height: 24px;
   margin-left: 10%;
@@ -44,7 +44,7 @@
 }
 
 .profile__edit-button:hover {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .profile__subtitle {
@@ -63,7 +63,7 @@
 
 .profile__add-button {
   background: transparent url(../images/add-icon.svg) center no-repeat;
-  border: #545454 1px solid;
+  border: #fff 2px solid;
   border-radius: 2px;
   width: 150px;
   height: 50px;
@@ -71,7 +71,7 @@
 }
 
 .profile__add-button:hover {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 @media screen and (max-width: 770px) {
