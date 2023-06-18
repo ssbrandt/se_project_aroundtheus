@@ -28,6 +28,9 @@
   font-weight: 500;
   font-size: 42px;
   line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .profile__edit-button {
   background: transparent url(../images/pencil-icon.svg) center no-repeat;
@@ -53,6 +56,9 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .profile__add-button {
@@ -88,8 +94,9 @@
   }
 
   .profile__content {
-    grid-template-columns: minmax(auto, 282px) auto;
-    justify-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .profile__pic {
     margin: 0;
@@ -99,49 +106,20 @@
 
   .profile__name {
     font-size: 22px;
+    padding-right: 10px;
   }
   .profile__edit-button {
     margin: 0;
   }
 
   .profile__subtitle {
+    width: 100%;
     font-size: 14px;
     margin-bottom: 36px;
+    text-align: center;
   }
   .profile__add-button {
     margin: 0;
     width: 282px;
   }
 }
-
-/* @media screen and (max-width: 480px) {
-  .profile {
-    flex-direction: column;
-  }
-
-  .profile__content {
-    grid-template-columns: minmax(auto, 282px) auto;
-    justify-items: center;
-  }
-  .profile__pic {
-    margin: 0;
-    margin-bottom: 26px;
-    padding-left: 0;
-  }
-
-  .profile__name {
-    font-size: 22px;
-  }
-  .profile__edit-button {
-    margin: 0;
-  }
-
-  .profile__subtitle {
-    font-size: 14px;
-    margin-bottom: 36px;
-  }
-  .profile__add-button {
-    margin: 0;
-    width: 282px;
-  }
-} */
