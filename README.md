@@ -21,7 +21,8 @@ The way you'll do this at work is by exporting images directly from Figma — we
 Good luck and have fun!
 
 **Project Features**
-This project showcases locations from around the US. Locations are submitted by a user, listed in the profile section. Currently this repo uses the following technologies:
+
+This project showcases locations from around the US uploaded by users. Currently this repo uses the following technologies:
 
 - Semantic HTML
 - Flexbox and grid layout
