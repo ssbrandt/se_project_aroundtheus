@@ -11,6 +11,6 @@
 @media screen and (max-width: 1100px) {
   .page__content {
     margin: 0 10px;
-    max-width: calc(100 - 20px);
+    max-width: calc(100% - 20px);
   }
 }
