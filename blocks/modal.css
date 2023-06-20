@@ -7,16 +7,15 @@
   box-sizing: border-box;
 }
 
-.modal__opened {
+.modal_opened {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal__container {
   position: fixed;
-  transform: translate(-50%, 0);
-  left: 50%;
-  top: 195px;
-  max-width: 430px;
+  margin: auto;
   background-color: #fff;
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
