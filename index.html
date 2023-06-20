@@ -27,17 +27,13 @@
             class="profile__pic"
           />
           <div class="profile__content">
-            <h1 class="profile__name">
-              Jacques Cousteau areardflasdkf afldskjf;asldfjka;sdf
-            </h1>
+            <h1 class="profile__name">Jacques Cousteau</h1>
             <button
               class="profile__edit-button"
               type="button"
               aria-label="edit"
             ></button>
-            <p class="profile__subtitle">
-              Explorer adskjflasdkfjsd;lfkjsdf;lskdajflsdkjfsdlk
-            </p>
+            <p class="profile__subtitle">Explorer</p>
           </div>
           <button
             class="profile__add-button"
@@ -131,6 +127,31 @@
       <footer class="footer">
         <p class="footer__copyright">&#169; 2023 Around the US</p>
       </footer>
+
+      <section class="modal">
+        <div class="modal__container">
+          <h2 class="modal__edit-name">Edit Profile</h2>
+          <form class="modal__form">
+            <fieldset class="modal__fieldset">
+              <input
+                type="text"
+                class="modal__input"
+                id="name"
+                placeholder="Name"
+                required
+              />
+              <input
+                type="text"
+                class="modal__input"
+                id="subtitle"
+                placeholder="Description"
+              />
+            </fieldset>
+            <button type="submit" class="modal__button-submit">Save</button>
+          </form>
+          <button type="button" class="modal__button-close"></button>
+        </div>
+      </section>
     </div>
     <script src="scripts/index.js"></script>
   </body>
