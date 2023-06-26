@@ -27,3 +27,22 @@ let initialCards = [
     link: "https://images.unsplash.com/photo-1516400691782-ad921bc57267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=376&q=80",
   },
 ];
+
+// Open modal on edit button click
+const editProfileButton = document.querySelector(".profile__edit-button");
+
+function openProfileEdit() {
+  const editModal = document.querySelector(".modal");
+  editModal.classList.add("modal_opened");
+}
+editProfileButton.addEventListener("click", openProfileEdit);
+
+// event listeners for closing modal
+
+const closeProfileButton = document.querySelector(".modal__button-close");
+
+function closeProfileEdit() {
+  const editModal = document.querySelector(".modal");
+  editModal.classList.remove("modal_opened");
+}
+closeProfileButton.addEventListener("click", closeProfileEdit);
