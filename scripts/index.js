@@ -37,7 +37,7 @@ function openProfileEdit() {
 }
 editProfileButton.addEventListener("click", openProfileEdit);
 
-// event listeners for closing modal
+// close modal on close click
 
 const closeProfileButton = document.querySelector(".modal__button-close");
 
@@ -46,3 +46,14 @@ function closeProfileEdit() {
   editModal.classList.remove("modal_opened");
 }
 closeProfileButton.addEventListener("click", closeProfileEdit);
+
+//set value of profile name and subtitle to equal page value
+
+let profileName = document.querySelector(".profile__name").textContent;
+let profileSubtitle = document.querySelector(".profile__subtitle").textContent;
+
+let editProfileName = document.querySelector("#name");
+editProfileName.value = profileName;
+
+let editProfileSubtitle = document.querySelector("#subtitle");
+editProfileSubtitle.value = profileSubtitle;
