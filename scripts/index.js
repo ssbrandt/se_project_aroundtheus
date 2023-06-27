@@ -78,3 +78,16 @@ function handleProfileFormSubmit(evt) {
 }
 
 formElement.addEventListener("submit", handleProfileFormSubmit);
+
+//part 3
+
+let cardList = document.querySelector(".location__cards");
+
+let cardTemplate = document.querySelector("#card");
+
+let cardElement = cardTemplate.content.cloneNode(true);
+
+// //need to set image, title
+cardElement.querySelector(".card__title").textContent = initialCards[0].name;
+cardElement.querySelector(".card__image").src = initialCards[0].link;
+cardList.append(cardElement);
