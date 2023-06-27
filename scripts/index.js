@@ -52,8 +52,29 @@ closeProfileButton.addEventListener("click", closeProfileEdit);
 let profileName = document.querySelector(".profile__name").textContent;
 let profileSubtitle = document.querySelector(".profile__subtitle").textContent;
 
-let editProfileName = document.querySelector("#name");
-editProfileName.value = profileName;
+let formElement = document.querySelector(".modal__form");
 
-let editProfileSubtitle = document.querySelector("#subtitle");
+let editProfileName = formElement.querySelector("#name");
+let editProfileSubtitle = formElement.querySelector("#subtitle");
+
+editProfileName.value = profileName;
 editProfileSubtitle.value = profileSubtitle;
+
+//part 2
+
+function handleProfileFormSubmit(evt) {
+  evt.preventDefault();
+
+  let updatedProfileName = editProfileName;
+  let updatedProfileSubtitle = editProfileSubtitle;
+
+  // fix this part
+  document.querySelector(".profile__name").textContent =
+    updatedProfileName.value;
+  document.querySelector(".profile__subtitle").textContent =
+    updatedProfileSubtitle.value;
+
+  closeProfileEdit();
+}
+
+formElement.addEventListener("submit", handleProfileFormSubmit);
