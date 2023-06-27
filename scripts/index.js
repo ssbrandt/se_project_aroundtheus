@@ -24,7 +24,7 @@ let initialCards = [
   },
   {
     name: "Harrisonburg VA",
-    link: "https://images.unsplash.com/photo-1516400691782-ad921bc57267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=376&q=80",
+    link: "https://images.unsplash.com/photo-1657567384402-b9918d5fd7b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80",
   },
 ];
 
@@ -81,13 +81,18 @@ formElement.addEventListener("submit", handleProfileFormSubmit);
 
 //part 3
 
-let cardList = document.querySelector(".location__cards");
+function getCardElement(data) {
+  let cardList = document.querySelector(".location__cards");
 
-let cardTemplate = document.querySelector("#card");
+  let cardTemplate = document.querySelector("#card");
 
-let cardElement = cardTemplate.content.cloneNode(true);
+  for (let i = 0; i < initialCards.length; i++) {
+    let cardElement = cardTemplate.content.cloneNode(true);
+    cardElement.querySelector(".card__title").textContent =
+      initialCards[i].name;
+    cardElement.querySelector(".card__image").src = initialCards[i].link;
+    cardList.append(cardElement);
+  }
+}
 
-// //need to set image, title
-cardElement.querySelector(".card__title").textContent = initialCards[0].name;
-cardElement.querySelector(".card__image").src = initialCards[0].link;
-cardList.append(cardElement);
+getCardElement(initialCards);
