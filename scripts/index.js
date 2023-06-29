@@ -75,16 +75,15 @@ formElement.addEventListener("submit", handleProfileFormSubmit);
 
 //part 3
 
+let cardList = document.querySelector(".location__cards");
+
 function getCardElement(data) {
   let cardTemplate = document.querySelector("#card");
   let cardElement = cardTemplate.content.cloneNode(true);
-
-  cardElement.querySelector(".card__title").textContent = initialCards[i].name;
-  cardElement.querySelector(".card__image").src = initialCards[i].link;
+  cardElement.querySelector(".card__title").textContent = data.name;
+  cardElement.querySelector(".card__image").src = data.link;
   return cardElement;
 }
-
-let cardList = document.querySelector(".location__cards");
 
 for (let i = 0; i < initialCards.length; i++) {
   const newCard = getCardElement(initialCards[i]);
