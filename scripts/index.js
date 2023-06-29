@@ -86,7 +86,7 @@ function getCardElement(data) {
 
 let cardList = document.querySelector(".location__cards");
 
-for (i = 0; i < initialCards.length; i++) {
+for (let i = 0; i < initialCards.length; i++) {
   const newCard = getCardElement(initialCards[i]);
   cardList.append(newCard);
 }
