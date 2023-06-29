@@ -5,12 +5,12 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal_opened {
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .modal__container {
@@ -46,7 +46,7 @@
 
 .modal__input {
   display: block;
-  width: 358px;
+  width: 100%;
   padding: 10px;
   border: none;
   margin-bottom: 30px;
@@ -59,7 +59,7 @@
 }
 
 .modal__button-submit {
-  width: 358px;
+  width: 100%;
   height: 50px;
   background-color: #000;
   color: #fff;
@@ -67,6 +67,7 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 1.2;
+  border: none;
 }
 
 .modal__button-submit:hover {
@@ -103,12 +104,10 @@
   }
 
   .modal__input {
-    max-width: 238px;
     font-size: 14px;
   }
 
   .modal__button-submit {
-    width: 238px;
     height: 46px;
     font-size: 14px;
   }

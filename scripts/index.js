@@ -28,38 +28,28 @@ const initialCards = [
   },
 ];
 
-// Open modal on edit button click
+const profileName = document.querySelector(".profile__name").textContent;
+const profileSubtitle =
+  document.querySelector(".profile__subtitle").textContent;
+const formElement = document.querySelector(".modal__form");
+const editProfileName = formElement.querySelector("#name");
+const editProfileSubtitle = formElement.querySelector("#subtitle");
+const profileEdit = document.querySelector(".modal");
+const closeProfileButton = profileEdit.querySelector(".modal__button-close");
 const editProfileButton = document.querySelector(".profile__edit-button");
 const editModal = document.querySelector(".modal");
 
 function openProfileEdit() {
+  editProfileName.value = profileName;
+  editProfileSubtitle.value = profileSubtitle;
   editModal.classList.add("modal_opened");
 }
 editProfileButton.addEventListener("click", openProfileEdit);
-
-// close modal on close click
-const profileEdit = document.querySelector(".modal");
-const closeProfileButton = profileEdit.querySelector(".modal__button-close");
 
 function closeProfileEdit() {
   editModal.classList.remove("modal_opened");
 }
 closeProfileButton.addEventListener("click", closeProfileEdit);
-
-//set value of profile name and subtitle to equal page value
-
-let profileName = document.querySelector(".profile__name").textContent;
-let profileSubtitle = document.querySelector(".profile__subtitle").textContent;
-
-let formElement = document.querySelector(".modal__form");
-
-let editProfileName = formElement.querySelector("#name");
-let editProfileSubtitle = formElement.querySelector("#subtitle");
-
-editProfileName.value = profileName;
-editProfileSubtitle.value = profileSubtitle;
-
-//part 2
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -73,15 +63,14 @@ function handleProfileFormSubmit(evt) {
 
 formElement.addEventListener("submit", handleProfileFormSubmit);
 
-//part 3
-
-let cardList = document.querySelector(".location__cards");
+const cardList = document.querySelector(".location__cards");
 
 function getCardElement(data) {
-  let cardTemplate = document.querySelector("#card");
-  let cardElement = cardTemplate.content.cloneNode(true);
+  const cardTemplate = document.querySelector("#card");
+  const cardElement = cardTemplate.content.cloneNode(true);
   cardElement.querySelector(".card__title").textContent = data.name;
   cardElement.querySelector(".card__image").src = data.link;
+  cardElement.querySelector(".card__image").alt = `Photo of ${data.name}`;
   return cardElement;
 }
 
