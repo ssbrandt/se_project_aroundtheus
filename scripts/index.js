@@ -82,17 +82,17 @@ formElement.addEventListener("submit", handleProfileFormSubmit);
 //part 3
 
 function getCardElement(data) {
-  let cardList = document.querySelector(".location__cards");
-
   let cardTemplate = document.querySelector("#card");
+  let cardElement = cardTemplate.content.cloneNode(true);
 
-  for (let i = 0; i < initialCards.length; i++) {
-    let cardElement = cardTemplate.content.cloneNode(true);
-    cardElement.querySelector(".card__title").textContent =
-      initialCards[i].name;
-    cardElement.querySelector(".card__image").src = initialCards[i].link;
-    cardList.append(cardElement);
-  }
+  cardElement.querySelector(".card__title").textContent = initialCards[i].name;
+  cardElement.querySelector(".card__image").src = initialCards[i].link;
+  return cardElement;
 }
 
-getCardElement(initialCards);
+let cardList = document.querySelector(".location__cards");
+
+for (i = 0; i < initialCards.length; i++) {
+  newCard = getCardElement(initialCards[i]);
+  cardList.append(newCard);
+}
