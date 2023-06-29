@@ -1,4 +1,4 @@
-let initialCards = [
+const initialCards = [
   {
     name: "Washington DC",
     link: "https://images.unsplash.com/photo-1617581629397-a72507c3de9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1744&q=80",
@@ -30,19 +30,18 @@ let initialCards = [
 
 // Open modal on edit button click
 const editProfileButton = document.querySelector(".profile__edit-button");
+const editModal = document.querySelector(".modal");
 
 function openProfileEdit() {
-  const editModal = document.querySelector(".modal");
   editModal.classList.add("modal_opened");
 }
 editProfileButton.addEventListener("click", openProfileEdit);
 
 // close modal on close click
-
-const closeProfileButton = document.querySelector(".modal__button-close");
+const profileEdit = document.querySelector(".modal");
+const closeProfileButton = profileEdit.querySelector(".modal__button-close");
 
 function closeProfileEdit() {
-  const editModal = document.querySelector(".modal");
   editModal.classList.remove("modal_opened");
 }
 closeProfileButton.addEventListener("click", closeProfileEdit);
@@ -65,14 +64,9 @@ editProfileSubtitle.value = profileSubtitle;
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
 
-  let updatedProfileName = editProfileName;
-  let updatedProfileSubtitle = editProfileSubtitle;
-
-  // fix this part
-  document.querySelector(".profile__name").textContent =
-    updatedProfileName.value;
+  document.querySelector(".profile__name").textContent = editProfileName.value;
   document.querySelector(".profile__subtitle").textContent =
-    updatedProfileSubtitle.value;
+    editProfileSubtitle.value;
 
   closeProfileEdit();
 }
@@ -93,6 +87,6 @@ function getCardElement(data) {
 let cardList = document.querySelector(".location__cards");
 
 for (i = 0; i < initialCards.length; i++) {
-  newCard = getCardElement(initialCards[i]);
+  const newCard = getCardElement(initialCards[i]);
   cardList.append(newCard);
 }
