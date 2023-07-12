@@ -78,13 +78,21 @@ initialCards.forEach(function (item) {
   cardList.append(getCardElement(item));
 });
 
-//add image modal operations
+//add image modal opening and closing
 
-const AddImageModal = document.querySelector("#add-image");
+const addImageModal = document.querySelector("#add-image");
 const addLocationButton = document.querySelector(".profile__add-button");
+const closeLocationButton = document.querySelector("#close-add-location");
 
 function openAddLocation() {
-  console.log("add profile class triggered");
-  AddImageModal.classList.add("modal_opened");
+  addImageModal.classList.add("modal_opened");
 }
 addLocationButton.addEventListener("click", openAddLocation);
+
+function closeAddLocation() {
+  addImageModal.classList.remove("modal_opened");
+}
+
+closeLocationButton.addEventListener("click", closeAddLocation);
+
+//add new image
