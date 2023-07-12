@@ -63,7 +63,7 @@
       <footer class="footer">
         <p class="footer__copyright">&#169; 2023 Around the US</p>
       </footer>
-      <div class="modal">
+      <div class="modal" id="edit-profile">
         <div class="modal__container">
           <h2 class="modal__edit-name">Edit Profile</h2>
           <form class="modal__form">
@@ -84,6 +84,31 @@
               />
             </fieldset>
             <button type="submit" class="modal__button-submit">Save</button>
+          </form>
+          <button type="button" class="modal__button-close"></button>
+        </div>
+      </div>
+      <div class="modal" id="add-image">
+        <div class="modal__container">
+          <h2 class="modal__edit-name">New Place</h2>
+          <form class="modal__form">
+            <fieldset class="modal__fieldset">
+              <input
+                type="text"
+                class="modal__input"
+                id="name"
+                placeholder="Title"
+                required
+              />
+              <input
+                type="url"
+                class="modal__input"
+                id="subtitle"
+                placeholder="image link"
+                required
+              />
+            </fieldset>
+            <button type="submit" class="modal__button-submit">Create</button>
           </form>
           <button type="button" class="modal__button-close"></button>
         </div>

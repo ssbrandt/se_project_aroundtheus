@@ -37,17 +37,17 @@ const editProfileSubtitle = formElement.querySelector("#subtitle");
 const profileEdit = document.querySelector(".modal");
 const closeProfileButton = profileEdit.querySelector(".modal__button-close");
 const editProfileButton = document.querySelector(".profile__edit-button");
-const editModal = document.querySelector(".modal");
+const editProfileModal = document.querySelector("#edit-profile");
 
 function openProfileEdit() {
   editProfileName.value = profileName;
   editProfileSubtitle.value = profileSubtitle;
-  editModal.classList.add("modal_opened");
+  editProfileModal.classList.add("modal_opened");
 }
 editProfileButton.addEventListener("click", openProfileEdit);
 
 function closeProfileEdit() {
-  editModal.classList.remove("modal_opened");
+  editProfileModal.classList.remove("modal_opened");
 }
 closeProfileButton.addEventListener("click", closeProfileEdit);
 
@@ -77,3 +77,14 @@ function getCardElement(data) {
 initialCards.forEach(function (item) {
   cardList.append(getCardElement(item));
 });
+
+//add image modal operations
+
+const AddImageModal = document.querySelector("#add-image");
+const addLocationButton = document.querySelector(".profile__add-button");
+
+function openAddLocation() {
+  console.log("add profile class triggered");
+  AddImageModal.classList.add("modal_opened");
+}
+addLocationButton.addEventListener("click", openAddLocation);
