@@ -74,7 +74,6 @@ function getCardElement(data) {
   return cardElement;
 }
 
-for (let i = 0; i < initialCards.length; i++) {
-  const newCard = getCardElement(initialCards[i]);
-  cardList.append(newCard);
-}
+initialCards.forEach(function (item) {
+  cardList.append(getCardElement(item));
+});
