@@ -76,6 +76,11 @@ function getCardElement(data) {
   cardElement.querySelector(".card__title").textContent = data.name;
   cardElement.querySelector(".card__image").src = data.link;
   cardElement.querySelector(".card__image").alt = `Photo of ${data.name}`;
+  //add likeButton event handler
+  const likeButton = cardElement.querySelector(".card__like-button");
+  likeButton.addEventListener("click", () => {
+    likeButton.classList.toggle("card__like-button_active");
+  });
   return cardElement;
 }
 
@@ -100,18 +105,7 @@ function closeAddLocation() {
 
 closeLocationButton.addEventListener("click", closeAddLocation);
 
-//unsuccessful attempt at a general toggle modal open/close function-- come back towards end of project
-
-// function toggleModal(modal) {
-//   console.log(modal);
-//   modal.classList.toggle("modal_opened");
-// }
-
-// closeLocationButton.addEventListener("click", toggleModal, addImageModal);
-
 //user added cards
-
-//from form save user input for title and url to variables, on close (event handler) add card to beginning of cards array and run close modal function
 
 function handleLocationFormSubmit(evt) {
   evt.preventDefault();
@@ -127,15 +121,3 @@ function handleLocationFormSubmit(evt) {
 
 const locationFormElement = document.querySelector("#location-modal-form");
 locationFormElement.addEventListener("submit", handleLocationFormSubmit);
-
-//wire up like button
-
-//function for changin appearance of like button
-const likeButtons = document.querySelectorAll(".card__like-button");
-
-likeButtons.forEach((likeButton) => {
-  likeButton.addEventListener("click", () => {
-    console.log("click");
-    likeButton.classList.toggle("card__like-button_active");
-  });
-});
