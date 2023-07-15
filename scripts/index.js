@@ -1,4 +1,4 @@
-const initialCards = [
+const cards = [
   {
     name: "Washington DC",
     link: "https://images.unsplash.com/photo-1617581629397-a72507c3de9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1744&q=80",
@@ -31,7 +31,7 @@ const initialCards = [
 const profileName = document.querySelector(".profile__name").textContent;
 const profileSubtitle =
   document.querySelector(".profile__subtitle").textContent;
-const formElement = document.querySelector(".modal__form");
+const formElement = document.querySelector("#edit-modal-form");
 const editProfileName = formElement.querySelector("#name");
 const editProfileSubtitle = formElement.querySelector("#subtitle");
 const profileEdit = document.querySelector(".modal");
@@ -39,6 +39,7 @@ const closeProfileButton = profileEdit.querySelector(".modal__button-close");
 const editProfileButton = document.querySelector(".profile__edit-button");
 const editProfileModal = document.querySelector("#edit-profile");
 
+//open and close Profile Edit prepopulating with page data
 function openProfileEdit() {
   editProfileName.value = profileName;
   editProfileSubtitle.value = profileSubtitle;
@@ -50,6 +51,8 @@ function closeProfileEdit() {
   editProfileModal.classList.remove("modal_opened");
 }
 closeProfileButton.addEventListener("click", closeProfileEdit);
+
+//handle updating profile localy
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -63,6 +66,8 @@ function handleProfileFormSubmit(evt) {
 
 formElement.addEventListener("submit", handleProfileFormSubmit);
 
+//handle existing cards
+
 const cardList = document.querySelector(".location__cards");
 
 function getCardElement(data) {
@@ -74,7 +79,7 @@ function getCardElement(data) {
   return cardElement;
 }
 
-initialCards.forEach(function (item) {
+cards.forEach(function (item) {
   cardList.append(getCardElement(item));
 });
 
@@ -95,4 +100,30 @@ function closeAddLocation() {
 
 closeLocationButton.addEventListener("click", closeAddLocation);
 
-//add new image
+//unsuccessful attempt at a general toggle modal open/close function-- come back towards end of project
+
+// function toggleModal(modal) {
+//   console.log(modal);
+//   modal.classList.toggle("modal_opened");
+// }
+
+// closeLocationButton.addEventListener("click", toggleModal, addImageModal);
+
+//user added cards
+
+//from form save user input for title and url to variables, on close (event handler) add card to beginning of cards array and run close modal function
+
+function handleLocationFormSubmit(evt) {
+  evt.preventDefault();
+  const locationTitle = document.querySelector("#location-title").value;
+  const locationURL = document.querySelector("#image-link").value;
+  const cardElement = getCardElement({
+    name: locationTitle,
+    link: locationURL,
+  });
+  cardList.prepend(cardElement);
+  closeAddLocation();
+}
+
+const locationFormElement = document.querySelector("#location-modal-form");
+locationFormElement.addEventListener("submit", handleLocationFormSubmit);
