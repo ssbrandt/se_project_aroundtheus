@@ -32,7 +32,7 @@
 }
 
 .card__like-button {
-  background: url(../images/heart-icon.svg) center no-repeat;
+  background: transparent url(../images/heart-icon.svg) center no-repeat;
   border: none;
   width: 21px;
   height: 18px;
@@ -41,4 +41,8 @@
 .card__like-button:hover {
   opacity: 0.5;
   cursor: pointer;
+}
+
+.card__like-button_active {
+  background: transparent url(../images/heart-icon-active.svg) center no-repeat;
 }

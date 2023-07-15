@@ -127,3 +127,15 @@ function handleLocationFormSubmit(evt) {
 
 const locationFormElement = document.querySelector("#location-modal-form");
 locationFormElement.addEventListener("submit", handleLocationFormSubmit);
+
+//wire up like button
+
+//function for changin appearance of like button
+const likeButtons = document.querySelectorAll(".card__like-button");
+
+likeButtons.forEach((likeButton) => {
+  likeButton.addEventListener("click", () => {
+    console.log("click");
+    likeButton.classList.toggle("card__like-button_active");
+  });
+});
