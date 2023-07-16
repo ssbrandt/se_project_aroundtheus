@@ -89,9 +89,31 @@ function getCardElement(data) {
     cardItem.remove();
   });
 
+  //add view image modal
+
+  cardElement.querySelector(".modal__image").src =
+    cardElement.querySelector(".card__image").src;
+
+  cardElement.querySelector(".modal__image").alt =
+    cardElement.querySelector(".card__image").alt;
+  cardElement.querySelector(".modal__title_image").textContent =
+    cardElement.querySelector(".card__title").textContent;
+
+  const viewImageModal = cardElement.querySelector(".modal");
+
   //add open view model event handler
   const cardImage = cardElement.querySelector(".card__image");
-  cardImage.addEventListener("click", openImageModal);
+  cardImage.addEventListener("click", () => {
+    viewImageModal.classList.add("modal_opened");
+  });
+
+  //close view modal event handler
+  const closeImageModalButton = cardElement.querySelector(
+    "#close-view-location"
+  );
+  closeImageModalButton.addEventListener("click", () => {
+    viewImageModal.classList.remove("modal_opened");
+  });
 
   return cardElement;
 }
@@ -133,18 +155,3 @@ function handleLocationFormSubmit(evt) {
 
 const locationFormElement = document.querySelector("#location-modal-form");
 locationFormElement.addEventListener("submit", handleLocationFormSubmit);
-
-//view image modal
-
-const viewImageModal = document.querySelector("#view-image");
-
-function openImageModal() {
-  viewImageModal.classList.add("modal_opened");
-}
-
-const closeImageModalButton = document.querySelector("#close-view-location");
-function closeImageModal() {
-  viewImageModal.classList.remove("modal_opened");
-}
-
-closeImageModalButton.addEventListener("click", closeImageModal);
