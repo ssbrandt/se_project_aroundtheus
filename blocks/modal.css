@@ -144,4 +144,12 @@
     top: -14;
     right: 0;
   }
+
+  .modal__container-image {
+    padding: 0;
+  }
+
+  .modal__image {
+    width: 100%;
+  }
 }
