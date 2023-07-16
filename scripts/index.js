@@ -89,6 +89,10 @@ function getCardElement(data) {
     cardItem.remove();
   });
 
+  //add open view model event handler
+  const cardImage = cardElement.querySelector(".card__image");
+  cardImage.addEventListener("click", openImageModal);
+
   return cardElement;
 }
 
@@ -129,3 +133,18 @@ function handleLocationFormSubmit(evt) {
 
 const locationFormElement = document.querySelector("#location-modal-form");
 locationFormElement.addEventListener("submit", handleLocationFormSubmit);
+
+//view image modal
+
+const viewImageModal = document.querySelector("#view-image");
+
+function openImageModal() {
+  viewImageModal.classList.add("modal_opened");
+}
+
+const closeImageModalButton = document.querySelector("#close-view-location");
+function closeImageModal() {
+  viewImageModal.classList.remove("modal_opened");
+}
+
+closeImageModalButton.addEventListener("click", closeImageModal);
