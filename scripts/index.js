@@ -1,4 +1,6 @@
-const cards = [
+//set initial set of cards
+
+const initialCards = [
   {
     name: "Washington DC",
     link: "https://images.unsplash.com/photo-1617581629397-a72507c3de9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1744&q=80",
@@ -28,47 +30,65 @@ const cards = [
   },
 ];
 
+// storing relevant DOM elements
 const profileName = document.querySelector(".profile__name").textContent;
 const profileSubtitle =
   document.querySelector(".profile__subtitle").textContent;
-const formElement = document.querySelector("#edit-modal-form");
-const editProfileName = formElement.querySelector("#name");
-const editProfileSubtitle = formElement.querySelector("#subtitle");
+const profileFormElement = document.querySelector("#edit-modal-form");
+const editProfileName = profileFormElement.querySelector("#name");
+const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
 const profileEdit = document.querySelector(".modal");
 const closeProfileButton = profileEdit.querySelector(".modal__button-close");
 const editProfileButton = document.querySelector(".profile__edit-button");
 const editProfileModal = document.querySelector("#edit-profile");
+const cardList = document.querySelector(".location__cards");
+const addImageModal = document.querySelector("#add-image");
+const addLocationButton = document.querySelector(".profile__add-button");
+const closeLocationButton = document.querySelector("#close-add-location");
+const locationFormElement = document.querySelector("#location-modal-form");
+const viewImageModal = document.querySelector("#view-image");
+const closeViewImageModalButton = document.querySelector(
+  "#close-view-location"
+);
 
-//open and close Profile Edit prepopulating with page data
-function openProfileEdit() {
+//helper functions
+
+function openModal(modal) {
+  modal.classList.add("modal_opened");
+}
+
+function closeModal(modal) {
+  modal.classList.remove("modal_opened");
+}
+
+//event handlers
+editProfileButton.addEventListener("click", () => {
   editProfileName.value = profileName;
   editProfileSubtitle.value = profileSubtitle;
-  editProfileModal.classList.add("modal_opened");
-}
-editProfileButton.addEventListener("click", openProfileEdit);
+  openModal(editProfileModal);
+});
 
-function closeProfileEdit() {
-  editProfileModal.classList.remove("modal_opened");
-}
-closeProfileButton.addEventListener("click", closeProfileEdit);
+closeProfileButton.addEventListener("click", () => {
+  closeModal(editProfileModal);
+});
 
-//handle updating profile localy
+profileFormElement.addEventListener("submit", handleProfileFormSubmit);
 
-function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
+locationFormElement.addEventListener("submit", handleLocationFormSubmit);
 
-  document.querySelector(".profile__name").textContent = editProfileName.value;
-  document.querySelector(".profile__subtitle").textContent =
-    editProfileSubtitle.value;
+closeViewImageModalButton.addEventListener("click", () => {
+  closeModal(viewImageModal);
+});
 
-  closeProfileEdit();
-}
+addLocationButton.addEventListener("click", () => {
+  openModal(addImageModal);
+});
 
-formElement.addEventListener("submit", handleProfileFormSubmit);
+closeLocationButton.addEventListener("click", () => {
+  closeModal(addImageModal);
+});
 
-//handle existing cards
-
-const cardList = document.querySelector(".location__cards");
+//handle cards
 
 function getCardElement(data) {
   const cardTemplate = document.querySelector("#card");
@@ -96,34 +116,27 @@ function getCardElement(data) {
     document.querySelector(".modal__image").src = data.link;
     document.querySelector(".modal__image").alt = `Photo of ${data.name}`;
     document.querySelector(".modal__title_image").textContent = data.name;
-    openViewImageModal();
+    openModal(viewImageModal);
   });
 
   return cardElement;
 }
 
-cards.forEach(function (item) {
+initialCards.forEach(function (item) {
   cardList.append(getCardElement(item));
 });
 
-//add image modal opening and closing
+//form submission
 
-const addImageModal = document.querySelector("#add-image");
-const addLocationButton = document.querySelector(".profile__add-button");
-const closeLocationButton = document.querySelector("#close-add-location");
+function handleProfileFormSubmit(evt) {
+  evt.preventDefault();
 
-function openAddLocation() {
-  addImageModal.classList.add("modal_opened");
+  document.querySelector(".profile__name").textContent = editProfileName.value;
+  document.querySelector(".profile__subtitle").textContent =
+    editProfileSubtitle.value;
+
+  closeModal(editProfileModal);
 }
-addLocationButton.addEventListener("click", openAddLocation);
-
-function closeAddLocation() {
-  addImageModal.classList.remove("modal_opened");
-}
-
-closeLocationButton.addEventListener("click", closeAddLocation);
-
-//user added cards
 
 function handleLocationFormSubmit(evt) {
   evt.preventDefault();
@@ -134,27 +147,5 @@ function handleLocationFormSubmit(evt) {
     link: locationURL,
   });
   cardList.prepend(cardElement);
-  closeAddLocation();
+  closeModal(addImageModal);
 }
-
-const locationFormElement = document.querySelector("#location-modal-form");
-locationFormElement.addEventListener("submit", handleLocationFormSubmit);
-
-//open view image modal
-
-const viewImageModal = document.querySelector("#view-image");
-function openViewImageModal() {
-  viewImageModal.classList.add("modal_opened");
-}
-
-const closeViewImageModalButton = document.querySelector(
-  "#close-view-location"
-);
-
-function closeViewImageModal() {
-  viewImageModal.classList.remove("modal_opened");
-}
-
-closeViewImageModalButton.addEventListener("click", closeViewImageModal);
-
-//close view image modal
