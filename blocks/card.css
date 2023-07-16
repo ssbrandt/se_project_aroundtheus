@@ -48,10 +48,17 @@
   background: transparent url(../images/heart-icon-active.svg) center no-repeat;
 }
 
-.card__delete {
+.card__delete-button {
+  background: transparent url(../images/delete-icon.svg) center no-repeat;
   width: 18px;
   height: 19.3px;
   position: absolute;
   top: 18px;
   right: 15px;
+  border: none;
+}
+
+.card__delete-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
 }
