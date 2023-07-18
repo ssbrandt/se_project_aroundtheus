@@ -37,10 +37,12 @@ const profileSubtitle =
 const profileFormElement = document.querySelector("#edit-modal-form");
 const editProfileName = profileFormElement.querySelector("#name");
 const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
-const profileEdit = document.querySelector(".modal");
-const closeProfileButton = profileEdit.querySelector(".modal__button-close");
-const editProfileButton = document.querySelector(".profile__edit-button");
 const editProfileModal = document.querySelector("#edit-profile");
+const closeProfileButton = editProfileModal.querySelector(
+  ".modal__button-close"
+);
+const editProfileButton = document.querySelector(".profile__edit-button");
+
 const cardList = document.querySelector(".location__cards");
 const addImageModal = document.querySelector("#add-image");
 const addLocationButton = document.querySelector(".profile__add-button");
@@ -71,6 +73,8 @@ editProfileButton.addEventListener("click", () => {
 closeProfileButton.addEventListener("click", () => {
   closeModal(editProfileModal);
 });
+
+// closeProfileButton.addEventListener("click", closeModal);
 
 profileFormElement.addEventListener("submit", handleProfileFormSubmit);
 
