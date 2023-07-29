@@ -158,15 +158,7 @@ function handleLocationFormSubmit(evt) {
 
 //handle form validation
 
-//specifically handling edit profile modal
-// const formElement = document.querySelector("#edit-modal-form");
-// const formInput = formElement.querySelector(".form__input");
-// const formError = formElement.querySelector(`.${formInput.id}-error`);
-
-// console.log(formElement);
-// console.log(formInput);
-// console.log(formError);
-
+//individual form validation functions
 const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
@@ -190,25 +182,37 @@ const checkInputValidity = (formElement, inputElement) => {
   }
 };
 
-// formElement.addEventListener("submit", (evt) => {
-//   evt.preventDefault();
-// });
+const hasInvalidInput = (inputList) => {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+};
 
-// formElement.addEventListener("input", checkInputValidity);
+const toggleButtonState = (inputList, buttonElement) => {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add("form__submit_inactive");
+  } else {
+    buttonElement.classList.remove("form__submit_inactive");
+  }
+};
 
 const setEventListeners = (formElement) => {
   const inputList = Array.from(formElement.querySelectorAll(".form__input"));
 
+  const buttonElement = formElement.querySelector(".form__submit");
+
+  toggleButtonState(inputList, buttonElement);
+
   inputList.forEach((inputElement) => {
     inputElement.addEventListener("input", () => {
       checkInputValidity(formElement, inputElement);
+      toggleButtonState(inputList, buttonElement);
     });
   });
 };
 
 const enableValidation = () => {
   const formList = Array.from(document.querySelectorAll(".form"));
-
   formList.forEach((formElement) => {
     formElement.addEventListener("submit", (evt) => {
       evt.preventDefault();

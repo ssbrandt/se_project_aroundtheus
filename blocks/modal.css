@@ -136,6 +136,13 @@
   visibility: visible;
 }
 
+.form__submit_inactive {
+  color: #000;
+  background-color: #fff;
+  opacity: 20%;
+  border: 1px #000 solid;
+}
+
 @media screen and (max-width: 620px) {
   .modal__container {
     max-width: 282px;
