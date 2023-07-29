@@ -159,46 +159,62 @@ function handleLocationFormSubmit(evt) {
 //handle form validation
 
 //specifically handling edit profile modal
-const formElement = document.querySelector("#edit-modal-form");
-const formInput = formElement.querySelector(".form__input");
-const formError = formElement.querySelector(`.${formInput.id}-error`);
+// const formElement = document.querySelector("#edit-modal-form");
+// const formInput = formElement.querySelector(".form__input");
+// const formError = formElement.querySelector(`.${formInput.id}-error`);
 
-console.log(formElement);
-console.log(formInput);
-console.log(formError);
+// console.log(formElement);
+// console.log(formInput);
+// console.log(formError);
 
-const showInputError = (inputElement, errorMessage) => {
+const showInputError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+
   inputElement.classList.add("form__input-error");
-  formError.textContent = errorMessage;
-  formError.classList.add("form__input-error-message_active");
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add("form__input-error-message_active");
 };
 
-const hideInputError = (inputElement) => {
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove("form__input-error");
-  formError.textContent = "";
-  formError.classList.remove("form__input-error-message_active");
+  errorElement.textContent = "";
+  errorElement.classList.remove("form__input-error-message_active");
 };
 
-const checkInputValidity = () => {
-  if (!formInput.validity.valid) {
-    showInputError(formInput, formInput.validationMessage);
+const checkInputValidity = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage);
   } else {
-    hideInputError(formInput);
+    hideInputError(formElement, inputElement);
   }
 };
 
-formElement.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-});
+// formElement.addEventListener("submit", (evt) => {
+//   evt.preventDefault();
+// });
 
-formElement.addEventListener("input", checkInputValidity);
+// formElement.addEventListener("input", checkInputValidity);
 
-// const setEventListeners = (formElement) => {
-//   const inputList = Array.from(formElement.querySelectorAll('.form__input'));
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll(".form__input"));
 
-//   inputList.forEach((inputElement) => {
-//     inputElement.addEventListener('input', () => {
-//       checkInputValidity(inputElement)
-//     })
-//   } )
-// };
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener("input", () => {
+      checkInputValidity(formElement, inputElement);
+    });
+  });
+};
+
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll(".form"));
+
+  formList.forEach((formElement) => {
+    formElement.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+    });
+    setEventListeners(formElement);
+  });
+};
+
+enableValidation();
