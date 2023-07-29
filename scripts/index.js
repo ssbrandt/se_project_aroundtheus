@@ -155,3 +155,50 @@ function handleLocationFormSubmit(evt) {
   locationFormElement.reset();
   closeModal(addImageModal);
 }
+
+//handle form validation
+
+//specifically handling edit profile modal
+const formElement = document.querySelector("#edit-modal-form");
+const formInput = formElement.querySelector(".form__input");
+const formError = formElement.querySelector(`.${formInput.id}-error`);
+
+console.log(formElement);
+console.log(formInput);
+console.log(formError);
+
+const showInputError = (inputElement, errorMessage) => {
+  inputElement.classList.add("form__input-error");
+  formError.textContent = errorMessage;
+  formError.classList.add("form__input-error-message_active");
+};
+
+const hideInputError = (inputElement) => {
+  inputElement.classList.remove("form__input-error");
+  formError.textContent = "";
+  formError.classList.remove("form__input-error-message_active");
+};
+
+const checkInputValidity = () => {
+  if (!formInput.validity.valid) {
+    showInputError(formInput, formInput.validationMessage);
+  } else {
+    hideInputError(formInput);
+  }
+};
+
+formElement.addEventListener("submit", (evt) => {
+  evt.preventDefault();
+});
+
+formElement.addEventListener("input", checkInputValidity);
+
+// const setEventListeners = (formElement) => {
+//   const inputList = Array.from(formElement.querySelectorAll('.form__input'));
+
+//   inputList.forEach((inputElement) => {
+//     inputElement.addEventListener('input', () => {
+//       checkInputValidity(inputElement)
+//     })
+//   } )
+// };

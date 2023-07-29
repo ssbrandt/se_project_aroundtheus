@@ -55,7 +55,7 @@
   width: 100%;
   padding: 10px;
   border: none;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-weight: 500;
   font-size: 14px;
@@ -115,6 +115,25 @@
   line-height: 1.2;
   padding: 10px 0 0 0;
   margin: 0;
+}
+
+.form__input-error {
+  border-bottom: solid red 1px;
+}
+
+.form__input-error-message {
+  visibility: hidden;
+  padding-bottom: 15px;
+  display: inline-block;
+}
+
+.form__input-error-message_active {
+  color: #ff0000;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.2;
+  visibility: visible;
 }
 
 @media screen and (max-width: 620px) {
