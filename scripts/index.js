@@ -151,9 +151,10 @@ function handleLocationFormSubmit(evt) {
     name: locationTitle,
     link: locationURL,
   });
+  const closeAddImageModalButton = addImageModal.querySelector(".form__submit");
   cardList.prepend(cardElement);
   locationFormElement.reset();
-  //add the disabled button function here
+  inactivateButton(closeAddImageModalButton);
   closeModal(addImageModal);
 }
 
