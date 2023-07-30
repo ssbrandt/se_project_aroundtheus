@@ -189,6 +189,7 @@ const hasInvalidInput = (inputList) => {
 
 const toggleButtonState = (inputList, buttonElement) => {
   if (hasInvalidInput(inputList)) {
+    //need to make this it's own
     buttonElement.classList.add("form__submit_inactive");
     buttonElement.disabled = true;
   } else {
@@ -225,12 +226,32 @@ const enableValidation = () => {
 enableValidation();
 
 //close pop-up event handlers
-document.addEventListener("click", (evt) => {
-  if (
-    addImageModal.classList.contains("modal_opened") &&
-    !evt.target.closest(".modal__container")
-  ) {
-    console.log("click");
-    // closeModal(addImageModal);
-  }
-});
+
+const closeModalOutsideClick = (modal) => {
+  modal.addEventListener("click", (evt) => {
+    if (
+      modal.classList.contains("modal_opened") &&
+      !evt.target.closest(".modal__container")
+    ) {
+      closeModal(modal);
+    }
+  });
+};
+
+const closeModalOnEsc = (modal) => {
+  document.addEventListener("keydown", (evt) => {
+    if (evt.key === "Escape" && modal.classList.contains("modal_opened")) {
+      closeModal(modal);
+    }
+  });
+};
+
+const setCloseModalOptions = () => {
+  modalList = Array.from(document.querySelectorAll(".modal"));
+  modalList.forEach((modal) => {
+    closeModalOutsideClick(modal);
+    closeModalOnEsc(modal);
+  });
+};
+
+setCloseModalOptions();
