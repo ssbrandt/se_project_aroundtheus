@@ -154,7 +154,8 @@ function handleLocationFormSubmit(evt) {
   const closeAddImageModalButton = addImageModal.querySelector(".form__submit");
   cardList.prepend(cardElement);
   locationFormElement.reset();
-  inactivateButton(closeAddImageModalButton);
+  closeAddImageModalButton.disabled = true;
+  closeAddImageModalButton.classList.add("form__submit_inactive");
   closeModal(addImageModal);
 }
 
