@@ -158,7 +158,6 @@ function handleLocationFormSubmit(evt) {
 
 //handle form validation
 
-//individual form validation functions
 const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
@@ -191,8 +190,10 @@ const hasInvalidInput = (inputList) => {
 const toggleButtonState = (inputList, buttonElement) => {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add("form__submit_inactive");
+    buttonElement.disabled = true;
   } else {
     buttonElement.classList.remove("form__submit_inactive");
+    buttonElement.disabled = false;
   }
 };
 
@@ -222,3 +223,14 @@ const enableValidation = () => {
 };
 
 enableValidation();
+
+//close pop-up event handlers
+document.addEventListener("click", (evt) => {
+  if (
+    addImageModal.classList.contains("modal_opened") &&
+    !evt.target.closest(".modal__container")
+  ) {
+    console.log("click");
+    // closeModal(addImageModal);
+  }
+});
