@@ -72,10 +72,10 @@
         <div class="modal__container">
           <h2 class="modal__edit-name">Edit Profile</h2>
           <form class="modal__form form" id="edit-modal-form" novalidate>
-            <fieldset class="modal__fieldset">
+            <fieldset class="form__fieldset">
               <input
                 type="text"
-                class="modal__input form__input"
+                class="form__input"
                 id="name"
                 placeholder="Name"
                 minlength="2"
@@ -85,7 +85,7 @@
               <span class="form__input-error-message name-error"></span>
               <input
                 type="text"
-                class="modal__input form__input"
+                class="form__input"
                 id="subtitle"
                 placeholder="Description"
                 minlength="2"
@@ -94,9 +94,7 @@
               />
               <span class="form__input-error-message subtitle-error"></span>
             </fieldset>
-            <button type="submit" class="modal__button-submit form__submit">
-              Save
-            </button>
+            <button type="submit" class="form__submit">Save</button>
           </form>
           <button type="button" class="modal__button-close"></button>
         </div>
@@ -105,10 +103,10 @@
         <div class="modal__container">
           <h2 class="modal__edit-name">New Place</h2>
           <form class="modal__form form" id="location-modal-form" novalidate>
-            <fieldset class="modal__fieldset">
+            <fieldset class="form__fieldset">
               <input
                 type="text"
-                class="modal__input form__input"
+                class="form__input"
                 id="location-title"
                 placeholder="Title"
                 minlength="1"
@@ -120,16 +118,14 @@
               ></span>
               <input
                 type="url"
-                class="modal__input form__input"
+                class="form__input"
                 id="image-link"
                 placeholder="image link"
                 required
               />
               <span class="form__input-error-message image-link-error"></span>
             </fieldset>
-            <button type="submit" class="modal__button-submit form__submit">
-              Create
-            </button>
+            <button type="submit" class="form__submit">Create</button>
           </form>
           <button
             type="button"
