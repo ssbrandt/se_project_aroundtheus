@@ -153,6 +153,7 @@ function handleLocationFormSubmit(evt) {
   });
   cardList.prepend(cardElement);
   locationFormElement.reset();
+  //add the disabled button function here
   closeModal(addImageModal);
 }
 
@@ -187,14 +188,21 @@ const hasInvalidInput = (inputList) => {
   });
 };
 
+const inactivateButton = (buttonElement) => {
+  buttonElement.classList.add("form__submit_inactive");
+  buttonElement.disabled = true;
+};
+
+const activateButton = (buttonElement) => {
+  buttonElement.classList.remove("form__submit_inactive");
+  buttonElement.disabled = false;
+};
+
 const toggleButtonState = (inputList, buttonElement) => {
   if (hasInvalidInput(inputList)) {
-    //need to make this it's own
-    buttonElement.classList.add("form__submit_inactive");
-    buttonElement.disabled = true;
+    inactivateButton(buttonElement);
   } else {
-    buttonElement.classList.remove("form__submit_inactive");
-    buttonElement.disabled = false;
+    activateButton(buttonElement);
   }
 };
 
