@@ -56,16 +56,6 @@ const closeViewImageModalButton = document.querySelector(
 const locationTitle = document.querySelector("#location-title");
 const locationURL = document.querySelector("#image-link");
 
-//helper functions
-
-function openModal(modal) {
-  modal.classList.add("modal_opened");
-}
-
-function closeModal(modal) {
-  modal.classList.remove("modal_opened");
-}
-
 function populateEditProfileModal() {
   editProfileName.value = profileName.textContent;
   editProfileSubtitle.value = profileSubtitle.textContent;
@@ -76,24 +66,12 @@ editProfileButton.addEventListener("click", () => {
   openModal(editProfileModal);
 });
 
-closeProfileButton.addEventListener("click", () => {
-  closeModal(editProfileModal);
-});
-
 profileFormElement.addEventListener("submit", handleProfileFormSubmit);
 
 locationFormElement.addEventListener("submit", handleLocationFormSubmit);
 
-closeViewImageModalButton.addEventListener("click", () => {
-  closeModal(viewImageModal);
-});
-
 addLocationButton.addEventListener("click", () => {
   openModal(addImageModal);
-});
-
-closeLocationButton.addEventListener("click", () => {
-  closeModal(addImageModal);
 });
 
 //handle cards
@@ -162,33 +140,38 @@ function handleLocationFormSubmit(evt) {
   closeModal(addImageModal);
 }
 
-//close pop-up event handlers
+//modal function and event handlers
 
-const closeModalOutsideClick = (modal) => {
-  modal.addEventListener("click", (evt) => {
+function closeModalOnEsc(evt) {
+  if (evt.key === "Escape") {
+    const openedModal = document.querySelector(".modal_opened");
+    closeModal(openedModal);
+  }
+}
+
+function openModal(modal) {
+  modal.classList.add("modal_opened");
+  document.addEventListener("keydown", closeModalOnEsc);
+}
+
+function closeModal(modal) {
+  modal.classList.remove("modal_opened");
+  document.removeEventListener("keydown", closeModalOnEsc);
+}
+
+const modals = Array.from(document.querySelectorAll(".modal"));
+
+modals.forEach((modal) => {
+  const closeButton = modal.querySelector(".modal__button-close");
+  modal.addEventListener("mousedown", (evt) => {
     if (
-      modal.classList.contains("modal_opened") &&
+      evt.target.classList.contains("modal__opened") &&
       !evt.target.closest(".modal__container")
     ) {
       closeModal(modal);
     }
   });
-};
-
-const closeModalOnEsc = (modal) => {
-  document.addEventListener("keydown", (evt) => {
-    if (evt.key === "Escape" && modal.classList.contains("modal_opened")) {
-      closeModal(modal);
-    }
+  closeButton.addEventListener("click", () => {
+    closeModal(modal);
   });
-};
-
-const setCloseModalOptions = () => {
-  const modalList = Array.from(document.querySelectorAll(".modal"));
-  modalList.forEach((modal) => {
-    closeModalOutsideClick(modal);
-    closeModalOnEsc(modal);
-  });
-};
-
-setCloseModalOptions();
+});
