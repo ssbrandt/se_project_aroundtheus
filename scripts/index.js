@@ -165,7 +165,7 @@ modals.forEach((modal) => {
   const closeButton = modal.querySelector(".modal__button-close");
   modal.addEventListener("mousedown", (evt) => {
     if (
-      evt.target.classList.contains("modal__opened") &&
+      evt.target.classList.contains("modal_opened") &&
       !evt.target.closest(".modal__container")
     ) {
       closeModal(modal);
