@@ -31,10 +31,9 @@ const initialCards = [
 ];
 
 // storing relevant DOM elements
-// const profileName = document.querySelector(".profile__name").textContent;
 const profileName = document.querySelector(".profile__name");
 const profileSubtitle = document.querySelector(".profile__subtitle");
-const profileFormElement = document.querySelector("#edit-modal-form");
+const profileFormElement = document.forms["edit-profile-form"];
 const editProfileName = profileFormElement.querySelector("#name");
 const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
 const editProfileModal = document.querySelector("#edit-profile");
@@ -47,11 +46,15 @@ const cardList = document.querySelector(".location__cards");
 const addImageModal = document.querySelector("#add-image");
 const addLocationButton = document.querySelector(".profile__add-button");
 const closeLocationButton = document.querySelector("#close-add-location");
-const locationFormElement = document.querySelector("#location-modal-form");
+const locationFormElement = document.forms["add-location-form"];
+
 const viewImageModal = document.querySelector("#view-image");
 const closeViewImageModalButton = document.querySelector(
   "#close-view-location"
 );
+
+const locationTitle = document.querySelector("#location-title");
+const locationURL = document.querySelector("#image-link");
 
 //helper functions
 
@@ -100,6 +103,9 @@ function getCardElement(data) {
   const cardElement = cardTemplate.content.cloneNode(true);
   const newCardTitle = cardElement.querySelector(".card__title");
   const newCardImage = cardElement.querySelector(".card__image");
+  const modalImage = document.querySelector(".modal__image");
+  const modalTitleImage = document.querySelector(".modal__title_image");
+
   newCardTitle.textContent = data.name;
   newCardImage.src = data.link;
   newCardImage.alt = `Photo of ${data.name}`;
@@ -119,11 +125,10 @@ function getCardElement(data) {
 
   //add view image modal
 
-  const cardImage = cardElement.querySelector(".card__image");
-  cardImage.addEventListener("click", () => {
-    document.querySelector(".modal__image").src = data.link;
-    document.querySelector(".modal__image").alt = `Photo of ${data.name}`;
-    document.querySelector(".modal__title_image").textContent = data.name;
+  newCardImage.addEventListener("click", () => {
+    modalImage.src = data.link;
+    modalImage.alt = `Photo of ${data.name}`;
+    modalTitleImage.textContent = data.name;
     openModal(viewImageModal);
   });
 
@@ -145,11 +150,9 @@ function handleProfileFormSubmit(evt) {
 
 function handleLocationFormSubmit(evt) {
   evt.preventDefault();
-  const locationTitle = document.querySelector("#location-title").value;
-  const locationURL = document.querySelector("#image-link").value;
   const cardElement = getCardElement({
-    name: locationTitle,
-    link: locationURL,
+    name: locationTitle.value,
+    link: locationURL.value,
   });
   const closeAddImageModalButton = addImageModal.querySelector(".form__submit");
   cardList.prepend(cardElement);
@@ -181,7 +184,7 @@ const closeModalOnEsc = (modal) => {
 };
 
 const setCloseModalOptions = () => {
-  modalList = Array.from(document.querySelectorAll(".modal"));
+  const modalList = Array.from(document.querySelectorAll(".modal"));
   modalList.forEach((modal) => {
     closeModalOutsideClick(modal);
     closeModalOnEsc(modal);
