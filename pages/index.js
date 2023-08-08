@@ -1,34 +1,54 @@
+import Card from "/components/Card.js";
+
 //set initial set of cards
 
 const initialCards = [
   {
-    name: "Washington DC",
-    link: "https://images.unsplash.com/photo-1617581629397-a72507c3de9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1744&q=80",
+    title: "Washington DC",
+    image:
+      "https://images.unsplash.com/photo-1617581629397-a72507c3de9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1744&q=80",
   },
 
   {
-    name: "Charlottesville",
-    link: "https://images.unsplash.com/photo-1625685124246-529a036f3142?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
+    title: "Charlottesville",
+    image:
+      "https://images.unsplash.com/photo-1625685124246-529a036f3142?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
   },
   {
-    name: "Rhode Island",
-    link: "https://images.unsplash.com/photo-1579379498402-48d6751d1ae9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=739&q=80",
-  },
-
-  {
-    name: "Blue Ridge Mountains",
-    link: "https://images.unsplash.com/photo-1603670849273-deb4670aa548?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=773&q=80",
+    title: "Rhode Island",
+    image:
+      "https://images.unsplash.com/photo-1579379498402-48d6751d1ae9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=739&q=80",
   },
 
   {
-    name: "Cape Cod",
-    link: "https://images.unsplash.com/photo-1516400691782-ad921bc57267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=376&q=80",
+    title: "Blue Ridge Mountains",
+    image:
+      "https://images.unsplash.com/photo-1603670849273-deb4670aa548?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=773&q=80",
+  },
+
+  {
+    title: "Cape Cod",
+    image:
+      "https://images.unsplash.com/photo-1516400691782-ad921bc57267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=376&q=80",
   },
   {
-    name: "Harrisonburg VA",
-    link: "https://images.unsplash.com/photo-1657567384402-b9918d5fd7b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80",
+    title: "Harrisonburg VA",
+    image:
+      "https://images.unsplash.com/photo-1657567384402-b9918d5fd7b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80",
   },
 ];
+
+function renderCard(cardData) {
+  const newCard = new Card(cardData, ".card-template");
+  return newCard.generateCard();
+}
+
+//render initial Cards
+const cardList = document.querySelector(".location__cards");
+initialCards.forEach(function (cardData) {
+  const newCard = renderCard(cardData);
+  cardList.append(newCard);
+});
 
 // storing relevant DOM elements
 const profileName = document.querySelector(".profile__name");
@@ -42,7 +62,7 @@ const closeProfileButton = editProfileModal.querySelector(
 );
 const editProfileButton = document.querySelector(".profile__edit-button");
 
-const cardList = document.querySelector(".location__cards");
+// const cardList = document.querySelector(".location__cards");
 const addImageModal = document.querySelector("#add-image");
 const addLocationButton = document.querySelector(".profile__add-button");
 const closeLocationButton = document.querySelector("#close-add-location");
@@ -74,49 +94,6 @@ addLocationButton.addEventListener("click", () => {
   openModal(addImageModal);
 });
 
-//handle cards
-
-function getCardElement(data) {
-  const cardTemplate = document.querySelector("#card");
-  const cardElement = cardTemplate.content.cloneNode(true);
-  const newCardTitle = cardElement.querySelector(".card__title");
-  const newCardImage = cardElement.querySelector(".card__image");
-  const modalImage = document.querySelector(".modal__image");
-  const modalTitleImage = document.querySelector(".modal__title_image");
-
-  newCardTitle.textContent = data.name;
-  newCardImage.src = data.link;
-  newCardImage.alt = `Photo of ${data.name}`;
-
-  //add likeButton event handler
-  const likeButton = cardElement.querySelector(".card__like-button");
-  likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("card__like-button_active");
-  });
-
-  //add deleteButton event handler
-  const deleteButton = cardElement.querySelector(".card__delete-button");
-  deleteButton.addEventListener("click", () => {
-    const cardItem = deleteButton.closest(".card");
-    cardItem.remove();
-  });
-
-  //add view image modal
-
-  newCardImage.addEventListener("click", () => {
-    modalImage.src = data.link;
-    modalImage.alt = `Photo of ${data.name}`;
-    modalTitleImage.textContent = data.name;
-    openModal(viewImageModal);
-  });
-
-  return cardElement;
-}
-
-initialCards.forEach(function (item) {
-  cardList.append(getCardElement(item));
-});
-
 //form submission
 
 function handleProfileFormSubmit(evt) {
@@ -128,9 +105,9 @@ function handleProfileFormSubmit(evt) {
 
 function handleLocationFormSubmit(evt) {
   evt.preventDefault();
-  const cardElement = getCardElement({
-    name: locationTitle.value,
-    link: locationURL.value,
+  const cardElement = renderCard({
+    title: locationTitle.value,
+    image: locationURL.value,
   });
   const closeAddImageModalButton = addImageModal.querySelector(".form__submit");
   cardList.prepend(cardElement);
