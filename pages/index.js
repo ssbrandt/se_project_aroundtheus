@@ -84,7 +84,7 @@ function populateEditProfileModal() {
 //event handlers
 editProfileButton.addEventListener("click", () => {
   populateEditProfileModal();
-  profileFormValidation.deactivateSubmitButton();
+  formValidators["edit-profile-form"].resetValidation();
   openModal(editProfileModal);
 });
 
@@ -111,10 +111,10 @@ function handleLocationFormSubmit(evt) {
     title: locationTitle.value,
     image: locationURL.value,
   });
-  const closeAddImageModalButton = addImageModal.querySelector(".form__submit");
   cardList.prepend(cardElement);
   locationFormElement.reset();
-  addImageFormValidation.deactivateSubmitButton();
+  formValidators["add-location-form"].resetValidation();
+
   closeModal(addImageModal);
 }
 
@@ -127,7 +127,7 @@ function closeModalOnEsc(evt) {
   }
 }
 
-function openModal(modal) {
+export function openModal(modal) {
   modal.classList.add("modal_opened");
   document.addEventListener("keydown", closeModalOnEsc);
 }
@@ -154,7 +154,6 @@ modals.forEach((modal) => {
   });
 });
 
-//throw away code
 const config = {
   formSelector: ".form",
   inputSelector: ".form__input",
@@ -164,9 +163,28 @@ const config = {
   errorClass: "form__input-error-message_active",
 };
 
-const profileFormValidation = new FormValidator(config, profileFormElement);
+// const profileFormValidation = new FormValidator(config, profileFormElement);
 
-profileFormValidation.enableValidation();
+// profileFormValidation.enableValidation();
 
-const addImageFormValidation = new FormValidator(config, locationFormElement);
-addImageFormValidation.enableValidation();
+// const addImageFormValidation = new FormValidator(config, locationFormElement);
+// addImageFormValidation.enableValidation();
+
+const formValidators = {};
+
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+    const formName = formElement.getAttribute("name");
+
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(config);
+
+console.log(formValidators);
+
+console.log(formValidators["edit-profile-form"]);

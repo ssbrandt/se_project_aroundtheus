@@ -1,3 +1,5 @@
+import { openModal } from "../pages/index.js";
+
 const viewImageModal = document.querySelector("#view-image");
 const modalImage = document.querySelector(".modal__image");
 const modalTitleImage = document.querySelector(".modal__title_image");
@@ -43,9 +45,7 @@ export default class Card {
     modalImage.src = this._cardImage;
     modalImage.alt = `Photo of ${this._cardTitle}`;
     modalTitleImage.textContent = this._cardTitle;
-    viewImageModal.classList.add("modal_opened");
-    //close on escape
-    document.addEventListener("keydown", this._closeModalOnEsc);
+    openModal(viewImageModal);
   }
 
   _closeModalOnEsc(evt) {
@@ -59,10 +59,9 @@ export default class Card {
     this._element = this._getTemplate();
 
     this._element.querySelector(".card__title").textContent = this._cardTitle;
-    this._element.querySelector(".card__image").src = this._cardImage;
-    this._element.querySelector(
-      ".card__image"
-    ).alt = `Photo of ${this._cardTitle}`;
+    this._cardPicture = this._element.querySelector(".card__image");
+    this._cardPicture.src = this._cardImage;
+    this._cardPicture.alt = `Photo of ${this._cardTitle}`;
 
     this._setEventListeners();
 
