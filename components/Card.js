@@ -34,8 +34,7 @@ export default class Card {
     //delete
     const deleteButton = this._element.querySelector(".card__delete-button");
     deleteButton.addEventListener("click", () => {
-      const cardItem = deleteButton.closest(".card");
-      cardItem.remove();
+      this._element.remove();
     });
   }
 

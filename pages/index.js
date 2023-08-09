@@ -1,4 +1,5 @@
 import Card from "/components/Card.js";
+import FormValidator from "/components/FormValidator.js";
 
 //set initial set of cards
 
@@ -83,6 +84,7 @@ function populateEditProfileModal() {
 //event handlers
 editProfileButton.addEventListener("click", () => {
   populateEditProfileModal();
+  profileFormValidation.deactivateSubmitButton();
   openModal(editProfileModal);
 });
 
@@ -112,8 +114,7 @@ function handleLocationFormSubmit(evt) {
   const closeAddImageModalButton = addImageModal.querySelector(".form__submit");
   cardList.prepend(cardElement);
   locationFormElement.reset();
-  closeAddImageModalButton.disabled = true;
-  closeAddImageModalButton.classList.add("form__submit_inactive");
+  addImageFormValidation.deactivateSubmitButton();
   closeModal(addImageModal);
 }
 
@@ -152,3 +153,20 @@ modals.forEach((modal) => {
     closeModal(modal);
   });
 });
+
+//throw away code
+const config = {
+  formSelector: ".form",
+  inputSelector: ".form__input",
+  submitButtonSelector: ".form__submit",
+  inactiveButtonClass: "form__submit_inactive",
+  inputErrorClass: "form__input-error",
+  errorClass: "form__input-error-message_active",
+};
+
+const profileFormValidation = new FormValidator(config, profileFormElement);
+
+profileFormValidation.enableValidation();
+
+const addImageFormValidation = new FormValidator(config, locationFormElement);
+addImageFormValidation.enableValidation();
