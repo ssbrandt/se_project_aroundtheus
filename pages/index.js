@@ -1,6 +1,6 @@
 import Card from "/components/Card.js";
 import FormValidator from "/components/FormValidator.js";
-
+import UserInfo from "/components/UserInfo.js";
 //set initial set of cards
 
 const initialCards = [
@@ -58,9 +58,9 @@ const profileFormElement = document.forms["edit-profile-form"];
 const editProfileName = profileFormElement.querySelector("#name");
 const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
 const editProfileModal = document.querySelector("#edit-profile");
-const closeProfileButton = editProfileModal.querySelector(
-  ".modal__button-close"
-);
+// const closeProfileButton = editProfileModal.querySelector(
+//   ".modal__button-close"
+// );
 const editProfileButton = document.querySelector(".profile__edit-button");
 
 // const cardList = document.querySelector(".location__cards");
@@ -77,10 +77,19 @@ const closeViewImageModalButton = document.querySelector(
 const locationTitle = document.querySelector("#location-title");
 const locationURL = document.querySelector("#image-link");
 
+//new User Info
+
+const userInfo = new UserInfo({
+  userNameSelector: ".profile__name",
+  userInfoSelector: ".profile__subtitle",
+});
+
 function populateEditProfileModal() {
-  editProfileName.value = profileName.textContent;
-  editProfileSubtitle.value = profileSubtitle.textContent;
+  const userData = userInfo.getUserInfo();
+  editProfileName.value = userData.name.textContent;
+  editProfileSubtitle.value = userData.info.textContent;
 }
+
 //event handlers
 editProfileButton.addEventListener("click", () => {
   populateEditProfileModal();
@@ -184,7 +193,3 @@ const enableValidation = (config) => {
 };
 
 enableValidation(config);
-
-console.log(formValidators);
-
-console.log(formValidators["edit-profile-form"]);

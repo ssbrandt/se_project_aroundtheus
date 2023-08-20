@@ -1,0 +1,64 @@
+class Popup {
+  constructor({ popupSelector }) {
+    this._popupElement = document.querySelector(popupSelector);
+  }
+
+  _handleEscClose(evt) {
+    if (evt.key === "Escape") {
+      this.close();
+    }
+  }
+
+  _setEventListeners() {
+    const closeButton = this.querySelector(".modal__button-close");
+    this.addEventListener("mousedown", (evt) => {
+      if (
+        evt.target.classList.contains("modal_opened") &&
+        !evt.target.closest(".modal__container")
+      ) {
+        closeModal(modal);
+      }
+    });
+    closeButton.addEventListener("click", () => {
+      closeModal(modal);
+    });
+  }
+
+  open() {
+    this._popupElement.add("modal_opened");
+    this.addEventListener("keydown", this._handleEscClose);
+  }
+
+  close() {
+    this._popupElement.remove("modal_opened");
+    this.removeEventListener("keydown", this._handleEscClose);
+  }
+}
+
+class PopupWithImage extends Popup {
+  constructor(popupSelector) {
+    super({ popupSelector });
+  }
+
+  open(card) {
+    //need to populate the image, src, and alt title for popup from card selected but with loose coupling
+    const modalImage = this._popupElement.querySelector(".modal__image");
+    const modalTitle = this._popupElement.querySelector(".modal__title_image");
+
+    //this is fine afterwards
+    super.open();
+  }
+}
+
+class PopupWithForm extends Popup {
+  constructor(popupSelector, handleFormSubmit) {
+    super({ popupSelector });
+    this._handleFormSubmit = handleFormSubmit;
+    this._popupForm = this._popupElement.querySelector(".modal__form");
+  }
+
+  close() {
+    this._popupForm.reset();
+    super.close();
+  }
+}
