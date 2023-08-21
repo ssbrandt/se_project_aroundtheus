@@ -1,6 +1,8 @@
 import Card from "/components/Card.js";
 import FormValidator from "/components/FormValidator.js";
 import UserInfo from "/components/UserInfo.js";
+import PopupWithImage from "/components/PopupWithImage.js";
+
 //set initial set of cards
 
 const initialCards = [
@@ -39,17 +41,18 @@ const initialCards = [
   },
 ];
 
-function renderCard(cardData) {
-  const newCard = new Card(cardData, ".card-template");
-  return newCard.generateCard();
-}
+//commenting out while working on classes
+// function renderCard(cardData) {
+//   const newCard = new Card(cardData, ".card-template");
+//   return newCard.generateCard();
+// }
 
-//render initial Cards
-const cardList = document.querySelector(".location__cards");
-initialCards.forEach(function (cardData) {
-  const newCard = renderCard(cardData);
-  cardList.append(newCard);
-});
+// //render initial Cards
+// const cardList = document.querySelector(".location__cards");
+// initialCards.forEach(function (cardData) {
+//   const newCard = renderCard(cardData);
+//   cardList.append(newCard);
+// });
 
 // storing relevant DOM elements
 const profileName = document.querySelector(".profile__name");
@@ -69,10 +72,10 @@ const addLocationButton = document.querySelector(".profile__add-button");
 const closeLocationButton = document.querySelector("#close-add-location");
 const locationFormElement = document.forms["add-location-form"];
 
-const viewImageModal = document.querySelector("#view-image");
-const closeViewImageModalButton = document.querySelector(
-  "#close-view-location"
-);
+// const viewImageModal = document.querySelector("#view-image");
+// const closeViewImageModalButton = document.querySelector(
+//   "#close-view-location"
+// );
 
 const locationTitle = document.querySelector("#location-title");
 const locationURL = document.querySelector("#image-link");
@@ -150,20 +153,21 @@ function closeModal(modal) {
 
 const modals = Array.from(document.querySelectorAll(".modal"));
 
-modals.forEach((modal) => {
-  const closeButton = modal.querySelector(".modal__button-close");
-  modal.addEventListener("mousedown", (evt) => {
-    if (
-      evt.target.classList.contains("modal_opened") &&
-      !evt.target.closest(".modal__container")
-    ) {
-      closeModal(modal);
-    }
-  });
-  closeButton.addEventListener("click", () => {
-    closeModal(modal);
-  });
-});
+//commenting out for pop up class
+// modals.forEach((modal) => {
+//   const closeButton = modal.querySelector(".modal__button-close");
+//   modal.addEventListener("mousedown", (evt) => {
+//     if (
+//       evt.target.classList.contains("modal_opened") &&
+//       !evt.target.closest(".modal__container")
+//     ) {
+//       closeModal(modal);
+//     }
+//   });
+//   closeButton.addEventListener("click", () => {
+//     closeModal(modal);
+//   });
+// });
 
 const config = {
   formSelector: ".form",
@@ -173,13 +177,6 @@ const config = {
   inputErrorClass: "form__input-error",
   errorClass: "form__input-error-message_active",
 };
-
-// const profileFormValidation = new FormValidator(config, profileFormElement);
-
-// profileFormValidation.enableValidation();
-
-// const addImageFormValidation = new FormValidator(config, locationFormElement);
-// addImageFormValidation.enableValidation();
 
 const formValidators = {};
 
@@ -195,3 +192,26 @@ const enableValidation = (config) => {
 };
 
 enableValidation(config);
+
+//refactor to card and pop-up classes
+
+const cardList = document.querySelector(".location__cards");
+
+const testCardData = {
+  title: "Harrisonburg VA",
+  image:
+    "https://images.unsplash.com/photo-1657567384402-b9918d5fd7b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80",
+};
+
+//create new card
+
+const viewImagePopup = new PopupWithImage(".view-image-popup");
+
+const testCard = new Card(testCardData, ".card-template", () => {
+  viewImagePopup.open({ image: testCardData.image, title: testCardData.title });
+});
+cardList.append(testCard.generateCard());
+
+//create section
+//render initial cards
+//update add card function

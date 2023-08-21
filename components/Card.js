@@ -5,10 +5,11 @@ const modalImage = document.querySelector(".modal__image");
 const modalTitleImage = document.querySelector(".modal__title_image");
 
 export default class Card {
-  constructor(data, cardSelector) {
+  constructor(data, cardSelector, handleCardClick) {
     this._cardSelector = cardSelector;
     this._cardTitle = data.title;
     this._cardImage = data.image;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -21,11 +22,15 @@ export default class Card {
 
   _setEventListeners() {
     // open card via click listener
+    // this._element
+    //   .querySelector(".card__image")
+    //   .addEventListener("click", () => {
+    //     this._handleOpenModal();
+    //   });
+
     this._element
       .querySelector(".card__image")
-      .addEventListener("click", () => {
-        this._handleOpenModal();
-      });
+      .addEventListener("click", this._handleCardClick);
 
     // like
     const likeButton = this._element.querySelector(".card__like-button");
@@ -41,10 +46,10 @@ export default class Card {
   }
 
   _handleOpenModal() {
-    //set modal contents
-    modalImage.src = this._cardImage;
-    modalImage.alt = `Photo of ${this._cardTitle}`;
-    modalTitleImage.textContent = this._cardTitle;
+    //set modal contents- remove when handled by popup
+    // modalImage.src = this._cardImage;
+    // modalImage.alt = `Photo of ${this._cardTitle}`;
+    // modalTitleImage.textContent = this._cardTitle;
     openModal(viewImageModal);
   }
 
