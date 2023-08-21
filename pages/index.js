@@ -109,8 +109,10 @@ addLocationButton.addEventListener("click", () => {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  profileName.textContent = editProfileName.value;
-  profileSubtitle.textContent = editProfileSubtitle.value;
+  userInfo.setUserInfo({
+    name: editProfileName.value,
+    info: editProfileSubtitle.value,
+  });
   closeModal(editProfileModal);
 }
 
