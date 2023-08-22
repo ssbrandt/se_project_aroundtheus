@@ -100,13 +100,6 @@ const userInfo = new UserInfo({
   userInfoSelector: ".profile__subtitle",
 });
 
-function populateEditProfileModal() {
-  const userData = userInfo.getUserInfo();
-  //will need to replace this with the _getInputValues method and use those values, but working for now
-  editProfileName.value = userData.name.textContent;
-  editProfileSubtitle.value = userData.info.textContent;
-}
-
 const profilePopup = new PopupWithForm({
   popupSelector: ".profile-popup",
   handleFormSubmit: (evt) => {
@@ -122,7 +115,9 @@ const profilePopup = new PopupWithForm({
 const editProfileButton = document.querySelector(".profile__edit-button");
 
 editProfileButton.addEventListener("click", () => {
-  populateEditProfileModal();
+  const userData = userInfo.getUserInfo();
+  editProfileName.value = userData.name.textContent;
+  editProfileSubtitle.value = userData.info.textContent;
   formValidators["edit-profile-form"].resetValidation();
   profilePopup.open();
 });
@@ -145,4 +140,5 @@ const addLocationButton = document.querySelector(".profile__add-button");
 
 addLocationButton.addEventListener("click", () => {
   addCardPopup.open();
+  formValidators["add-location-form"].resetValidation();
 });
