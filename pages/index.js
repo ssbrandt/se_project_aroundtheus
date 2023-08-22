@@ -2,6 +2,7 @@ import Card from "/components/Card.js";
 import FormValidator from "/components/FormValidator.js";
 import UserInfo from "/components/UserInfo.js";
 import PopupWithImage from "/components/PopupWithImage.js";
+import Section from "/components/Section.js";
 
 //set initial set of cards
 
@@ -207,11 +208,17 @@ const testCardData = {
 
 const viewImagePopup = new PopupWithImage(".view-image-popup");
 
-const testCard = new Card(testCardData, ".card-template", () => {
-  viewImagePopup.open({ image: testCardData.image, title: testCardData.title });
-});
-cardList.append(testCard.generateCard());
+const cardSection = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const card = new Card(item, ".card-template", () => {
+        viewImagePopup.open({ image: item.image, title: item.title });
+      });
+      cardSection.addItem(card.generateCard());
+    },
+  },
+  ".location__cards"
+);
 
-//create section
-//render initial cards
-//update add card function
+cardSection.renderItems();
