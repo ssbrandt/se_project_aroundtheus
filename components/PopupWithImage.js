@@ -7,7 +7,6 @@ export default class PopupWithImage extends Popup {
   }
 
   open({ image, title }) {
-    //need to populate the image, src, and alt title for popup from card selected but with loose coupling
     this._popupImage = this._popupElement.querySelector(".modal__image");
     this._popupTitle = this._popupElement.querySelector(".modal__title_image");
     this._popupImage.src = image;

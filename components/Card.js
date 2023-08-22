@@ -1,9 +1,3 @@
-import { openModal } from "../pages/index.js";
-
-const viewImageModal = document.querySelector("#view-image");
-const modalImage = document.querySelector(".modal__image");
-const modalTitleImage = document.querySelector(".modal__title_image");
-
 export default class Card {
   constructor(data, cardSelector, handleCardClick) {
     this._cardSelector = cardSelector;
@@ -21,13 +15,6 @@ export default class Card {
   }
 
   _setEventListeners() {
-    // open card via click listener
-    // this._element
-    //   .querySelector(".card__image")
-    //   .addEventListener("click", () => {
-    //     this._handleOpenModal();
-    //   });
-
     this._element
       .querySelector(".card__image")
       .addEventListener("click", this._handleCardClick);
@@ -43,20 +30,6 @@ export default class Card {
     deleteButton.addEventListener("click", () => {
       this._element.remove();
     });
-  }
-
-  _handleOpenModal() {
-    //set modal contents- remove when handled by popup
-    // modalImage.src = this._cardImage;
-    // modalImage.alt = `Photo of ${this._cardTitle}`;
-    // modalTitleImage.textContent = this._cardTitle;
-    openModal(viewImageModal);
-  }
-
-  _closeModalOnEsc(evt) {
-    if (evt.key === "Escape") {
-      viewImageModal.classList.remove("modal_opened");
-    }
   }
 
   generateCard() {
