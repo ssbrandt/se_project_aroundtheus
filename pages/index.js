@@ -2,6 +2,7 @@ import Card from "/components/Card.js";
 import FormValidator from "/components/FormValidator.js";
 import UserInfo from "/components/UserInfo.js";
 import PopupWithImage from "/components/PopupWithImage.js";
+import PopupWithForm from "/components/PopupWithForm.js";
 import Section from "/components/Section.js";
 
 //set initial set of cards
@@ -55,70 +56,18 @@ const initialCards = [
 //   cardList.append(newCard);
 // });
 
-// storing relevant DOM elements
-const profileName = document.querySelector(".profile__name");
-const profileSubtitle = document.querySelector(".profile__subtitle");
-const profileFormElement = document.forms["edit-profile-form"];
-const editProfileName = profileFormElement.querySelector("#name");
-const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
-const editProfileModal = document.querySelector("#edit-profile");
-// const closeProfileButton = editProfileModal.querySelector(
-//   ".modal__button-close"
-// );
-const editProfileButton = document.querySelector(".profile__edit-button");
-
-// const cardList = document.querySelector(".location__cards");
 const addImageModal = document.querySelector("#add-image");
 const addLocationButton = document.querySelector(".profile__add-button");
-const closeLocationButton = document.querySelector("#close-add-location");
 const locationFormElement = document.forms["add-location-form"];
-
-// const viewImageModal = document.querySelector("#view-image");
-// const closeViewImageModalButton = document.querySelector(
-//   "#close-view-location"
-// );
 
 const locationTitle = document.querySelector("#location-title");
 const locationURL = document.querySelector("#image-link");
-
-//new User Info
-
-const userInfo = new UserInfo({
-  userNameSelector: ".profile__name",
-  userInfoSelector: ".profile__subtitle",
-});
-
-function populateEditProfileModal() {
-  const userData = userInfo.getUserInfo();
-  editProfileName.value = userData.name.textContent;
-  editProfileSubtitle.value = userData.info.textContent;
-}
-
-//event handlers
-editProfileButton.addEventListener("click", () => {
-  populateEditProfileModal();
-  formValidators["edit-profile-form"].resetValidation();
-  openModal(editProfileModal);
-});
-
-profileFormElement.addEventListener("submit", handleProfileFormSubmit);
 
 locationFormElement.addEventListener("submit", handleLocationFormSubmit);
 
 addLocationButton.addEventListener("click", () => {
   openModal(addImageModal);
 });
-
-//form submission
-
-function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
-  userInfo.setUserInfo({
-    name: editProfileName.value,
-    info: editProfileSubtitle.value,
-  });
-  closeModal(editProfileModal);
-}
 
 function handleLocationFormSubmit(evt) {
   evt.preventDefault();
@@ -196,16 +145,6 @@ enableValidation(config);
 
 //refactor to card and pop-up classes
 
-const cardList = document.querySelector(".location__cards");
-
-const testCardData = {
-  title: "Harrisonburg VA",
-  image:
-    "https://images.unsplash.com/photo-1657567384402-b9918d5fd7b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80",
-};
-
-//create new card
-
 const viewImagePopup = new PopupWithImage(".view-image-popup");
 
 const cardSection = new Section(
@@ -222,3 +161,46 @@ const cardSection = new Section(
 );
 
 cardSection.renderItems();
+
+//refactor profile edit to use classes
+
+//new User Info
+
+const profileFormElement = document.forms["edit-profile-form"];
+const editProfileName = profileFormElement.querySelector("#name");
+const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
+const editProfileModal = document.querySelector("#edit-profile");
+
+const userInfo = new UserInfo({
+  userNameSelector: ".profile__name",
+  userInfoSelector: ".profile__subtitle",
+});
+
+function populateEditProfileModal() {
+  const userData = userInfo.getUserInfo();
+  //will need to replace this with the _getInputValues method and use those values, but working for now
+  editProfileName.value = userData.name.textContent;
+  editProfileSubtitle.value = userData.info.textContent;
+}
+
+const profilePopup = new PopupWithForm({
+  popupSelector: ".profile-popup",
+  handleFormSubmit: (evt) => {
+    evt.preventDefault();
+    userInfo.setUserInfo({
+      name: editProfileName.value,
+      info: editProfileSubtitle.value,
+    });
+    profilePopup.close();
+  },
+});
+
+const editProfileButton = document.querySelector(".profile__edit-button");
+
+editProfileButton.addEventListener("click", () => {
+  populateEditProfileModal();
+  formValidators["edit-profile-form"].resetValidation();
+  profilePopup.open();
+});
+
+//add location
