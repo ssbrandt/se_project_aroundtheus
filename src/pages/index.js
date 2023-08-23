@@ -48,7 +48,6 @@ cardSection.renderItems();
 const profileFormElement = document.forms["edit-profile-form"];
 const editProfileName = profileFormElement.querySelector("#name");
 const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
-const editProfileModal = document.querySelector("#edit-profile");
 
 const userInfo = new UserInfo({
   userNameSelector: ".profile__name",
