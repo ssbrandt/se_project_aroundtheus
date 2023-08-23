@@ -70,8 +70,8 @@ const editProfileButton = document.querySelector(".profile__edit-button");
 
 editProfileButton.addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
-  editProfileName.value = userData.name.textContent;
-  editProfileSubtitle.value = userData.info.textContent;
+  editProfileName.value = userData.name;
+  editProfileSubtitle.value = userData.info;
   formValidators["edit-profile-form"].resetValidation();
   profilePopup.open();
 });
