@@ -54,10 +54,10 @@ const userInfo = new UserInfo({
   userInfoSelector: ".profile__subtitle",
 });
 
+//new
 const profilePopup = new PopupWithForm({
   popupSelector: ".profile-popup",
-  handleFormSubmit: (evt) => {
-    evt.preventDefault();
+  handleFormSubmit: () => {
     userInfo.setUserInfo({
       name: editProfileName.value,
       info: editProfileSubtitle.value,
@@ -80,11 +80,9 @@ editProfileButton.addEventListener("click", () => {
 
 const addCardPopup = new PopupWithForm({
   popupSelector: ".add-card-popup",
-  handleFormSubmit: (evt) => {
-    evt.preventDefault();
-    const cardData = addCardPopup.getInputValues();
-    const card = new Card(cardData, ".card-template", () => {
-      viewImagePopup.open({ image: cardData.image, title: cardData.title });
+  handleFormSubmit: (formData) => {
+    const card = new Card(formData, ".card-template", () => {
+      viewImagePopup.open({ image: formData.image, title: formData.title });
     });
     cardSection.addItem(card.generateCard());
     addCardPopup.close();
