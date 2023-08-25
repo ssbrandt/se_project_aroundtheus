@@ -28,15 +28,17 @@ enableValidation(config);
 
 const viewImagePopup = new PopupWithImage(".view-image-popup");
 
+const renderCard = (item) => {
+  const card = new Card(item, ".card-template", () => {
+    viewImagePopup.open({ image: item.image, title: item.title });
+  });
+  cardSection.addItem(card.generateCard());
+};
+
 const cardSection = new Section(
   {
     items: initialCards,
-    renderer: (item) => {
-      const card = new Card(item, ".card-template", () => {
-        viewImagePopup.open({ image: item.image, title: item.title });
-      });
-      cardSection.addItem(card.generateCard());
-    },
+    renderer: renderCard,
   },
   ".location__cards"
 );
@@ -81,13 +83,11 @@ editProfileButton.addEventListener("click", () => {
 const addCardPopup = new PopupWithForm({
   popupSelector: ".add-card-popup",
   handleFormSubmit: (formData) => {
-    const card = new Card(formData, ".card-template", () => {
-      viewImagePopup.open({ image: formData.image, title: formData.title });
-    });
-    cardSection.addItem(card.generateCard());
+    renderCard(formData);
     addCardPopup.close();
   },
 });
+
 const addLocationButton = document.querySelector(".profile__add-button");
 
 addLocationButton.addEventListener("click", () => {
