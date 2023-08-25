@@ -42,6 +42,11 @@
   cursor: pointer;
 }
 
+.form__submit_inactive:hover {
+  opacity: 0.2;
+  cursor: default;
+}
+
 .form__input-error {
   border-bottom: solid red 1px;
 }
