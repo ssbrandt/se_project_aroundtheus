@@ -1,5 +1,5 @@
 export default class Api {
-  constructor(baseUrl, headers) {
+  constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
     this._headers = headers;
   }
@@ -79,8 +79,83 @@ export default class Api {
       });
   }
 
-  //addCard(){}
-  //deleteCard(){}
-  //likeCard(){}
-  //unlikeCard() {}
+  addCard(card) {
+    return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
+      method: "POST",
+      headers: {
+        authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: card.name,
+        link: card.link,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        // if the server returns an error, reject the promise
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+      });
+  }
+
+  deleteCard(cardID) {
+    return fetch(this._baseUrl + "/cards/" + cardID, {
+      method: "DELETE",
+      headers: {
+        authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        // if the server returns an error, reject the promise
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+      });
+  }
+
+  likeCard(cardID) {
+    return fetch(this._baseUrl + "/cards/" + cardID + "/likes", {
+      method: "PUT",
+      headers: {
+        authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        // if the server returns an error, reject the promise
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+      });
+  }
+  unlikeCard(cardID) {
+    return fetch(this._baseUrl + "/cards/" + cardID + "/likes", {
+      method: "DELETE",
+      headers: {
+        authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        // if the server returns an error, reject the promise
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+      });
+  }
 }

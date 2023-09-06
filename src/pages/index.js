@@ -106,11 +106,23 @@ const api = new Api({
   },
 });
 
-api.getInitialCards();
-console.log(api.getUserInfo());
+//card stuff
+
+// const card = {
+//   name: "New Card",
+//   link: "https://images.unsplash.com/photo-1528629297340-d1d466945dc5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmlraW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+// };
+
+// api.getInitialCards();
+// api.unlikeCard("64f8f7deef16d0001aca53c4");
+// api.addCard(card);
+// api.deleteCard("64f8f7e0ef16d0001aca53c9");
+//user stuff
+
+// console.log(api.getUserInfo());
 // const data = { name: "New Name", about: "new description" };
 // api.updateUserInfo(data);
-api.updateUserImage(
-  "https://images.unsplash.com/photo-1528629297340-d1d466945dc5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmlraW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-);
-console.log(api.getUserInfo());
+// api.updateUserImage(
+//   "https://images.unsplash.com/photo-1528629297340-d1d466945dc5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmlraW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+// );
+// console.log(api.getUserInfo());
