@@ -5,6 +5,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import Section from "../components/Section.js";
 import { initialCards, config } from "../utils/constants.js";
+import Api from "../components/Api.js";
 import "./index.css";
 
 //form validations
@@ -94,3 +95,22 @@ addLocationButton.addEventListener("click", () => {
   addCardPopup.open();
   formValidators["add-location-form"].resetValidation();
 });
+
+//let's test the API class
+
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "92a79377-2ddd-47c9-b759-a9f13176876d",
+    "Content-Type": "application/json",
+  },
+});
+
+api.getInitialCards();
+console.log(api.getUserInfo());
+// const data = { name: "New Name", about: "new description" };
+// api.updateUserInfo(data);
+api.updateUserImage(
+  "https://images.unsplash.com/photo-1528629297340-d1d466945dc5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmlraW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+);
+console.log(api.getUserInfo());
