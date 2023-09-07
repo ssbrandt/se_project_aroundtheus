@@ -80,17 +80,7 @@ export default class Api {
         name: card.name,
         link: card.link,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // if the server returns an error, reject the promise
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
+    });
   }
 
   deleteCard(cardID) {
@@ -99,17 +89,7 @@ export default class Api {
       headers: {
         authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // if the server returns an error, reject the promise
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
+    });
   }
 
   likeCard(cardID) {
@@ -118,17 +98,7 @@ export default class Api {
       headers: {
         authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // if the server returns an error, reject the promise
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
+    });
   }
   unlikeCard(cardID) {
     return fetch(this._baseUrl + "/cards/" + cardID + "/likes", {
@@ -136,17 +106,7 @@ export default class Api {
       headers: {
         authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // if the server returns an error, reject the promise
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
+    });
   }
 
   // loadPageContent() {}
