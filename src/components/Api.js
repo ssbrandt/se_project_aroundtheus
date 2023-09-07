@@ -66,17 +66,7 @@ export default class Api {
       headers: {
         authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // if the server returns an error, reject the promise
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
+    });
   }
 
   addCard(card) {

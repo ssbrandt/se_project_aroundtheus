@@ -38,22 +38,39 @@ enableValidation(config);
 
 const viewImagePopup = new PopupWithImage(".view-image-popup");
 
+//new code for rendering initial cards
+let cardSection;
+
 const renderCard = (item) => {
   const card = new Card(item, ".card-template", () => {
-    viewImagePopup.open({ image: item.image, title: item.title });
+    viewImagePopup.open({ image: item["link"], title: item["name"] });
   });
   cardSection.addItem(card.generateCard());
 };
 
-const cardSection = new Section(
-  {
-    items: initialCards,
-    renderer: renderCard,
-  },
-  ".location__cards"
-);
+api
+  .getInitialCards()
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    // if the server returns an error, reject the promise
+    return Promise.reject(`Error: ${res.status}`);
+  })
+  .then((cards) => {
+    cardSection = new Section(
+      {
+        items: cards,
+        renderer: renderCard,
+      },
+      ".location__cards"
+    );
 
-cardSection.renderItems();
+    cardSection.renderItems();
+  })
+  .catch((err) => {
+    console.error(`Error: ${err}`);
+  });
 
 //Profile functionality
 
@@ -97,17 +114,6 @@ const profilePopup = new PopupWithForm({
     profilePopup.close();
   },
 });
-// old code
-// const profilePopup = new PopupWithForm({
-//   popupSelector: ".profile-popup",
-//   handleFormSubmit: () => {
-//     userInfo.setUserInfo({
-//       name: editProfileName.value,
-//       info: editProfileSubtitle.value,
-//     });
-//     profilePopup.close();
-//   },
-// });
 
 const editProfileButton = document.querySelector(".profile__edit-button");
 
@@ -156,7 +162,7 @@ addLocationButton.addEventListener("click", () => {
 // api.getInitialCards();
 // api.unlikeCard("64f8f7deef16d0001aca53c4");
 // api.addCard(card);
-// api.deleteCard("64f8f7e0ef16d0001aca53c9");
+// api.deleteCard("6a0d44142523c6a486e53f3f");
 //user stuff
 
 // console.log(api.getUserInfo());
