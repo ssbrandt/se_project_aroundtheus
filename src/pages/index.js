@@ -79,17 +79,35 @@ api.getUserInfo().then((res) => {
   });
 });
 
-// new
 const profilePopup = new PopupWithForm({
   popupSelector: ".profile-popup",
   handleFormSubmit: () => {
-    userInfo.setUserInfo({
+    const data = {
       name: editProfileName.value,
-      info: editProfileSubtitle.value,
+      about: editProfileSubtitle.value,
+    };
+    api.updateUserInfo(data).then((res) => {
+      userInfo.setUserInfo({
+        name: res["name"],
+        info: res["about"],
+        image: res["avatar"],
+        id: res["_id"],
+      });
     });
     profilePopup.close();
   },
 });
+// old code
+// const profilePopup = new PopupWithForm({
+//   popupSelector: ".profile-popup",
+//   handleFormSubmit: () => {
+//     userInfo.setUserInfo({
+//       name: editProfileName.value,
+//       info: editProfileSubtitle.value,
+//     });
+//     profilePopup.close();
+//   },
+// });
 
 const editProfileButton = document.querySelector(".profile__edit-button");
 
