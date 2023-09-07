@@ -158,4 +158,6 @@ export default class Api {
         console.error(`Error: ${err}`);
       });
   }
+
+  // loadPageContent() {}
 }

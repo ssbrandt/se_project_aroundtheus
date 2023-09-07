@@ -8,6 +8,15 @@ import { initialCards, config } from "../utils/constants.js";
 import Api from "../components/Api.js";
 import "./index.css";
 
+//api
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "92a79377-2ddd-47c9-b759-a9f13176876d",
+    "Content-Type": "application/json",
+  },
+});
+
 //form validations
 
 const formValidators = {};
@@ -52,12 +61,25 @@ const profileFormElement = document.forms["edit-profile-form"];
 const editProfileName = profileFormElement.querySelector("#name");
 const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
 
+//update profile data to use API calls
+
 const userInfo = new UserInfo({
   userNameSelector: ".profile__name",
   userInfoSelector: ".profile__subtitle",
+  userImageSelector: ".profile__pic",
+  userId: "",
 });
 
-//new
+api.getUserInfo().then((res) => {
+  userInfo.setUserInfo({
+    name: res["name"],
+    info: res["about"],
+    image: res["avatar"],
+    id: res["_id"],
+  });
+});
+
+// new
 const profilePopup = new PopupWithForm({
   popupSelector: ".profile-popup",
   handleFormSubmit: () => {
@@ -98,13 +120,13 @@ addLocationButton.addEventListener("click", () => {
 
 //let's test the API class
 
-const api = new Api({
-  baseUrl: "https://around-api.en.tripleten-services.com/v1",
-  headers: {
-    authorization: "92a79377-2ddd-47c9-b759-a9f13176876d",
-    "Content-Type": "application/json",
-  },
-});
+// const api = new Api({
+//   baseUrl: "https://around-api.en.tripleten-services.com/v1",
+//   headers: {
+//     authorization: "92a79377-2ddd-47c9-b759-a9f13176876d",
+//     "Content-Type": "application/json",
+//   },
+// });
 
 //card stuff
 
