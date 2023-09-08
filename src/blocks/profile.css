@@ -14,6 +14,11 @@
   margin-right: 24px;
 }
 
+.profile__pic:hover {
+  opacity: 0.8;
+  background-color: #000;
+}
+
 .profile__content {
   display: grid;
   grid-template-areas: "name edit" "subtitle subtitle";

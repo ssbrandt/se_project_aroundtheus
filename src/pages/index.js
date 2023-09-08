@@ -233,3 +233,34 @@ const unlikeCard = (card) => {
       console.error(`Error: ${err}`);
     });
 };
+
+//add event handler for image change popup
+
+const profileImage = document.querySelector(".profile__pic");
+
+const imageChangePopup = new PopupWithForm({
+  popupSelector: ".profile-image-popup",
+  handleFormSubmit: (formData) => {
+    //need to add call here
+    api
+      .updateUserImage(formData["profile-image"])
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        // if the server returns an error, reject the promise
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((res) => {
+        imageChangePopup.close();
+        profileImage.src = res.avatar;
+      })
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+      });
+  },
+});
+
+profileImage.addEventListener("click", () => {
+  imageChangePopup.open();
+});

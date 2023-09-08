@@ -163,6 +163,34 @@
           <h2 class="modal__title modal__title_image">Test Title</h2>
         </div>
       </div>
+
+      <div class="modal profile-image-popup" id="edit-profile-image">
+        <div class="modal__container">
+          <h2 class="modal__edit-name">Change profile picture</h2>
+          <form
+            class="modal__form form"
+            id="edit-image-modal-form"
+            name="edit--image-profile-form"
+            novalidate
+          >
+            <fieldset class="form__fieldset">
+              <input
+                type="url"
+                class="form__input"
+                id="profile-image"
+                placeholder="profile-image"
+                name="profile-image"
+                required
+              />
+              <span
+                class="form__input-error-message profile-image-error"
+              ></span>
+            </fieldset>
+            <button type="submit" class="form__submit">Save</button>
+          </form>
+          <button type="button" class="modal__button-close"></button>
+        </div>
+      </div>
     </div>
   </body>
 </html>
