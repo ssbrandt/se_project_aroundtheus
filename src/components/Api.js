@@ -10,13 +10,7 @@ export default class Api {
         authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
         "Content-Type": "application/json",
       },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
+    });
   }
 
   updateUserInfo(data) {
@@ -30,13 +24,7 @@ export default class Api {
         name: data.name,
         about: data.about,
       }),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
+    });
   }
 
   updateUserImage(imageURL) {
@@ -52,13 +40,7 @@ export default class Api {
           avatar: imageURL,
         }),
       }
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
+    );
   }
 
   getInitialCards() {

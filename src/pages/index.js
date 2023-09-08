@@ -41,10 +41,33 @@ const viewImagePopup = new PopupWithImage(".view-image-popup");
 //new code for rendering initial cards
 let cardSection;
 
+////new delete card functionality
+const deleteCard = (card) => {
+  api
+    .deleteCard(card)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      // if the server returns an error, reject the promise
+      return Promise.reject(`Error: ${res.status}`);
+    })
+    .catch((err) => {
+      console.error(`Error: ${err}`);
+    });
+};
+
 const renderCard = (item) => {
-  const card = new Card(item, ".card-template", () => {
-    viewImagePopup.open({ image: item["link"], title: item["name"] });
-  });
+  const card = new Card(
+    item,
+    ".card-template",
+    () => {
+      viewImagePopup.open({ image: item["link"], title: item["name"] });
+    },
+    deleteCard,
+    likeCard,
+    unlikeCard
+  );
   cardSection.addItem(card.generateCard());
 };
 
@@ -87,14 +110,26 @@ const userInfo = new UserInfo({
   userId: "",
 });
 
-api.getUserInfo().then((res) => {
-  userInfo.setUserInfo({
-    name: res["name"],
-    info: res["about"],
-    image: res["avatar"],
-    id: res["_id"],
+api
+  .getUserInfo()
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    // if the server returns an error, reject the promise
+    return Promise.reject(`Error: ${res.status}`);
+  })
+  .then((res) => {
+    userInfo.setUserInfo({
+      name: res["name"],
+      info: res["about"],
+      image: res["avatar"],
+      id: res["_id"],
+    });
+  })
+  .catch((err) => {
+    console.error(`Error: ${err}`);
   });
-});
 
 const profilePopup = new PopupWithForm({
   popupSelector: ".profile-popup",
@@ -103,15 +138,26 @@ const profilePopup = new PopupWithForm({
       name: editProfileName.value,
       about: editProfileSubtitle.value,
     };
-    api.updateUserInfo(data).then((res) => {
-      userInfo.setUserInfo({
-        name: res["name"],
-        info: res["about"],
-        image: res["avatar"],
-        id: res["_id"],
+    api
+      .updateUserInfo(data)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((res) => {
+        userInfo.setUserInfo({
+          name: res["name"],
+          info: res["about"],
+          image: res["avatar"],
+          id: res["_id"],
+        });
+        profilePopup.close();
+      })
+      .catch((err) => {
+        console.error(`Error: ${err}`);
       });
-    });
-    profilePopup.close();
   },
 });
 
@@ -155,3 +201,35 @@ addLocationButton.addEventListener("click", () => {
   addCardPopup.open();
   formValidators["add-location-form"].resetValidation();
 });
+
+//like and unlike handler functions
+
+const likeCard = (card) => {
+  api
+    .likeCard(card)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      // if the server returns an error, reject the promise
+      return Promise.reject(`Error: ${res.status}`);
+    })
+    .catch((err) => {
+      console.error(`Error: ${err}`);
+    });
+};
+
+const unlikeCard = (card) => {
+  api
+    .unlikeCard(card)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      // if the server returns an error, reject the promise
+      return Promise.reject(`Error: ${res.status}`);
+    })
+    .catch((err) => {
+      console.error(`Error: ${err}`);
+    });
+};
