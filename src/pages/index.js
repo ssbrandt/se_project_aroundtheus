@@ -82,6 +82,7 @@ api
 const addCardPopup = new PopupWithForm({
   popupSelector: ".add-card-popup",
   handleFormSubmit: (formData) => {
+    addCardPopup.setSavingMessage();
     api
       .addCard(formData)
       .then((res) => {
@@ -94,6 +95,7 @@ const addCardPopup = new PopupWithForm({
       .then((data) => {
         renderCard(data);
         addCardPopup.close();
+        addCardPopup.resetSubmitMessage("Create");
       })
       .catch((err) => {
         console.error(`Error: ${err}`);
@@ -157,12 +159,14 @@ const confirmDelete = (card) => {
 
 ////new delete card functionality
 const deleteCard = (card) => {
+  confirmDeletePopup.setSavingMessage();
   api
     .deleteCard(card._cardId)
     .then((res) => {
       if (res.ok) {
         card.removeCard();
         confirmDeletePopup.close();
+        confirmDeletePopup.resetSubmitMessage("Yes");
         return res.json();
       }
       // if the server returns an error, reject the promise
@@ -196,8 +200,6 @@ const renderCard = (item) => {
 const profileFormElement = document.forms["edit-profile-form"];
 const editProfileName = profileFormElement.querySelector("#name");
 const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
-
-//update profile data to use API calls
 
 const userInfo = new UserInfo({
   userNameSelector: ".profile__name",
@@ -234,6 +236,7 @@ const profilePopup = new PopupWithForm({
       name: editProfileName.value,
       about: editProfileSubtitle.value,
     };
+    profilePopup.setSavingMessage();
     api
       .updateUserInfo(data)
       .then((res) => {
@@ -250,6 +253,7 @@ const profilePopup = new PopupWithForm({
           id: res["_id"],
         });
         profilePopup.close();
+        profilePopup.resetSubmitMessage("Save");
       })
       .catch((err) => {
         console.error(`Error: ${err}`);
@@ -267,14 +271,12 @@ editProfileButton.addEventListener("click", () => {
   profilePopup.open();
 });
 
-//add event handler for image change popup
-
 const profileImage = document.querySelector(".profile__pic");
 
 const imageChangePopup = new PopupWithForm({
   popupSelector: ".profile-image-popup",
   handleFormSubmit: (formData) => {
-    //need to add call here
+    imageChangePopup.setSavingMessage();
     api
       .updateUserImage(formData["profile-image"])
       .then((res) => {
@@ -287,6 +289,7 @@ const imageChangePopup = new PopupWithForm({
       .then((res) => {
         imageChangePopup.close();
         profileImage.src = res.avatar;
+        imageChangePopup.resetSubmitMessage("Save");
       })
       .catch((err) => {
         console.error(`Error: ${err}`);
