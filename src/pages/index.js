@@ -8,7 +8,11 @@ import { initialCards, config } from "../utils/constants.js";
 import Api from "../components/Api.js";
 import "./index.css";
 
-//api
+/*////////////////////////////////////////////////////////////////////
+/                                                                    /
+/                          API                                       /
+/                                                                    /
+////////////////////////////////////////////////////////////////////*/
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
   headers: {
@@ -17,7 +21,11 @@ const api = new Api({
   },
 });
 
-//form validations
+/*////////////////////////////////////////////////////////////////////
+/                                                                    /
+/                         Form Validation                            /
+/                                                                    /
+////////////////////////////////////////////////////////////////////*/
 
 const formValidators = {};
 
@@ -34,42 +42,16 @@ const enableValidation = (config) => {
 
 enableValidation(config);
 
-//Card functionality
+/*////////////////////////////////////////////////////////////////////
+/                                                                    /
+/                         Cards                                      /
+/                                                                    /
+////////////////////////////////////////////////////////////////////*/
 
 const viewImagePopup = new PopupWithImage(".view-image-popup");
 
 //new code for rendering initial cards
 let cardSection;
-
-////new delete card functionality
-const deleteCard = (card) => {
-  api
-    .deleteCard(card)
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // if the server returns an error, reject the promise
-      return Promise.reject(`Error: ${res.status}`);
-    })
-    .catch((err) => {
-      console.error(`Error: ${err}`);
-    });
-};
-
-const renderCard = (item) => {
-  const card = new Card(
-    item,
-    ".card-template",
-    () => {
-      viewImagePopup.open({ image: item["link"], title: item["name"] });
-    },
-    deleteCard,
-    likeCard,
-    unlikeCard
-  );
-  cardSection.addItem(card.generateCard());
-};
 
 api
   .getInitialCards()
@@ -95,7 +77,121 @@ api
     console.error(`Error: ${err}`);
   });
 
-//Profile functionality
+//add new card
+
+const addCardPopup = new PopupWithForm({
+  popupSelector: ".add-card-popup",
+  handleFormSubmit: (formData) => {
+    api
+      .addCard(formData)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        // if the server returns an error, reject the promise
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((data) => {
+        renderCard(data);
+        addCardPopup.close();
+      })
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+      });
+  },
+});
+
+const addLocationButton = document.querySelector(".profile__add-button");
+
+addLocationButton.addEventListener("click", () => {
+  addCardPopup.open();
+  formValidators["add-location-form"].resetValidation();
+});
+
+//like and unlike handler functions
+
+const likeCard = (card) => {
+  api
+    .likeCard(card)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      // if the server returns an error, reject the promise
+      return Promise.reject(`Error: ${res.status}`);
+    })
+    .catch((err) => {
+      console.error(`Error: ${err}`);
+    });
+};
+
+const unlikeCard = (card) => {
+  api
+    .unlikeCard(card)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      // if the server returns an error, reject the promise
+      return Promise.reject(`Error: ${res.status}`);
+    })
+    .catch((err) => {
+      console.error(`Error: ${err}`);
+    });
+};
+
+////need to update delete handler to open pop-up
+
+const confirmDeletePopup = new PopupWithForm({
+  popupSelector: ".delete-card-popup",
+  handleFormSubmit: () => {
+    deleteCard(cardElement);
+  },
+});
+
+let cardElement;
+const confirmDelete = (card) => {
+  confirmDeletePopup.open();
+  cardElement = card;
+};
+
+////new delete card functionality
+const deleteCard = (card) => {
+  api
+    .deleteCard(card._cardId)
+    .then((res) => {
+      if (res.ok) {
+        card.removeCard();
+        confirmDeletePopup.close();
+        return res.json();
+      }
+      // if the server returns an error, reject the promise
+      return Promise.reject(`Error: ${res.status}`);
+    })
+    .catch((err) => {
+      console.error(`Error: ${err}`);
+    });
+};
+
+const renderCard = (item) => {
+  const card = new Card(
+    item,
+    ".card-template",
+    () => {
+      viewImagePopup.open({ image: item["link"], title: item["name"] });
+    },
+    confirmDelete,
+    likeCard,
+    unlikeCard
+  );
+  cardSection.addItem(card.generateCard());
+};
+
+/*////////////////////////////////////////////////////////////////////
+/                                                                    /
+/                          Profile                                   /
+/                                                                    /
+////////////////////////////////////////////////////////////////////*/
 
 const profileFormElement = document.forms["edit-profile-form"];
 const editProfileName = profileFormElement.querySelector("#name");
@@ -170,69 +266,6 @@ editProfileButton.addEventListener("click", () => {
   formValidators["edit-profile-form"].resetValidation();
   profilePopup.open();
 });
-
-//add new card
-
-const addCardPopup = new PopupWithForm({
-  popupSelector: ".add-card-popup",
-  handleFormSubmit: (formData) => {
-    api
-      .addCard(formData)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // if the server returns an error, reject the promise
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((data) => {
-        renderCard(data);
-        addCardPopup.close();
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
-  },
-});
-
-const addLocationButton = document.querySelector(".profile__add-button");
-
-addLocationButton.addEventListener("click", () => {
-  addCardPopup.open();
-  formValidators["add-location-form"].resetValidation();
-});
-
-//like and unlike handler functions
-
-const likeCard = (card) => {
-  api
-    .likeCard(card)
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // if the server returns an error, reject the promise
-      return Promise.reject(`Error: ${res.status}`);
-    })
-    .catch((err) => {
-      console.error(`Error: ${err}`);
-    });
-};
-
-const unlikeCard = (card) => {
-  api
-    .unlikeCard(card)
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // if the server returns an error, reject the promise
-      return Promise.reject(`Error: ${res.status}`);
-    })
-    .catch((err) => {
-      console.error(`Error: ${err}`);
-    });
-};
 
 //add event handler for image change popup
 

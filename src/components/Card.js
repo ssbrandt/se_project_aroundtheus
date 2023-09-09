@@ -37,7 +37,11 @@ export default class Card {
   };
 
   _handleDelete = () => {
-    this._deleteHandler(this._cardId);
+    // this._deleteHandler(this._cardId);
+    this._deleteHandler(this);
+  };
+
+  removeCard = () => {
     this._element.remove();
     this._element = null;
   };
