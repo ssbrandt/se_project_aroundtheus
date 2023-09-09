@@ -9,9 +9,7 @@ import Api from "../components/Api.js";
 import "./index.css";
 
 /*////////////////////////////////////////////////////////////////////
-/                                                                    /
 /                          API                                       /
-/                                                                    /
 ////////////////////////////////////////////////////////////////////*/
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
@@ -22,9 +20,18 @@ const api = new Api({
 });
 
 /*////////////////////////////////////////////////////////////////////
-/                                                                    /
+/                         Page Contents                              /
+////////////////////////////////////////////////////////////////////*/
+
+const addLocationButton = document.querySelector(".profile__add-button");
+const profileFormElement = document.forms["edit-profile-form"];
+const editProfileName = profileFormElement.querySelector("#name");
+const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
+const editProfileButton = document.querySelector(".profile__edit-button");
+const profileImage = document.querySelector(".profile__image");
+
+/*////////////////////////////////////////////////////////////////////
 /                         Form Validation                            /
-/                                                                    /
 ////////////////////////////////////////////////////////////////////*/
 
 const formValidators = {};
@@ -43,12 +50,123 @@ const enableValidation = (config) => {
 enableValidation(config);
 
 /*////////////////////////////////////////////////////////////////////
-/                                                                    /
-/                         Cards                                      /
-/                                                                    /
+/                         Page Load                                  /
+////////////////////////////////////////////////////////////////////*/
+
+/*////////////////////////////////////////////////////////////////////
+/                         Event Listeners                            /
+////////////////////////////////////////////////////////////////////*/
+
+addLocationButton.addEventListener("click", () => {
+  addCardPopup.open();
+  formValidators["add-location-form"].resetValidation();
+});
+
+editProfileButton.addEventListener("click", () => {
+  const userData = userInfo.getUserInfo();
+  editProfileName.value = userData.name;
+  editProfileSubtitle.value = userData.info;
+  formValidators["edit-profile-form"].resetValidation();
+  profilePopup.open();
+});
+
+profileImage.addEventListener("click", () => {
+  imageChangePopup.open();
+});
+
+/*////////////////////////////////////////////////////////////////////
+/                      Popups                                        /
 ////////////////////////////////////////////////////////////////////*/
 
 const viewImagePopup = new PopupWithImage(".view-image-popup");
+const confirmDeletePopup = new PopupWithForm({
+  popupSelector: ".delete-card-popup",
+  handleFormSubmit: () => {
+    deleteCard(cardElement);
+  },
+});
+
+const addCardPopup = new PopupWithForm({
+  popupSelector: ".add-card-popup",
+  handleFormSubmit: (formData) => {
+    addCardPopup.setSavingMessage();
+    api
+      .addCard(formData)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((data) => {
+        renderCard(data);
+        addCardPopup.close();
+        addCardPopup.resetSubmitMessage("Create");
+      })
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+      });
+  },
+});
+
+const profilePopup = new PopupWithForm({
+  popupSelector: ".profile-popup",
+  handleFormSubmit: () => {
+    const data = {
+      name: editProfileName.value,
+      about: editProfileSubtitle.value,
+    };
+    profilePopup.setSavingMessage();
+    api
+      .updateUserInfo(data)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((res) => {
+        userInfo.setUserInfo({
+          name: res["name"],
+          info: res["about"],
+          image: res["avatar"],
+          id: res["_id"],
+        });
+        profilePopup.close();
+        profilePopup.resetSubmitMessage("Save");
+      })
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+      });
+  },
+});
+
+const imageChangePopup = new PopupWithForm({
+  popupSelector: ".profile-image-popup",
+  handleFormSubmit: (formData) => {
+    imageChangePopup.setSavingMessage();
+    api
+      .updateUserImage(formData["profile-image"])
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((res) => {
+        imageChangePopup.close();
+        profileImage.src = res.avatar;
+        imageChangePopup.resetSubmitMessage("Save");
+      })
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+      });
+  },
+});
+
+/*////////////////////////////////////////////////////////////////////
+/                         Cards                                      /
+////////////////////////////////////////////////////////////////////*/
 
 //new code for rendering initial cards
 let cardSection;
@@ -59,7 +177,6 @@ api
     if (res.ok) {
       return res.json();
     }
-    // if the server returns an error, reject the promise
     return Promise.reject(`Error: ${res.status}`);
   })
   .then((cards) => {
@@ -77,41 +194,6 @@ api
     console.error(`Error: ${err}`);
   });
 
-//add new card
-
-const addCardPopup = new PopupWithForm({
-  popupSelector: ".add-card-popup",
-  handleFormSubmit: (formData) => {
-    addCardPopup.setSavingMessage();
-    api
-      .addCard(formData)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // if the server returns an error, reject the promise
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((data) => {
-        renderCard(data);
-        addCardPopup.close();
-        addCardPopup.resetSubmitMessage("Create");
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
-  },
-});
-
-const addLocationButton = document.querySelector(".profile__add-button");
-
-addLocationButton.addEventListener("click", () => {
-  addCardPopup.open();
-  formValidators["add-location-form"].resetValidation();
-});
-
-//like and unlike handler functions
-
 const likeCard = (card) => {
   api
     .likeCard(card)
@@ -119,7 +201,6 @@ const likeCard = (card) => {
       if (res.ok) {
         return res.json();
       }
-      // if the server returns an error, reject the promise
       return Promise.reject(`Error: ${res.status}`);
     })
     .catch((err) => {
@@ -134,7 +215,6 @@ const unlikeCard = (card) => {
       if (res.ok) {
         return res.json();
       }
-      // if the server returns an error, reject the promise
       return Promise.reject(`Error: ${res.status}`);
     })
     .catch((err) => {
@@ -142,22 +222,12 @@ const unlikeCard = (card) => {
     });
 };
 
-////need to update delete handler to open pop-up
-
-const confirmDeletePopup = new PopupWithForm({
-  popupSelector: ".delete-card-popup",
-  handleFormSubmit: () => {
-    deleteCard(cardElement);
-  },
-});
-
 let cardElement;
 const confirmDelete = (card) => {
   confirmDeletePopup.open();
   cardElement = card;
 };
 
-////new delete card functionality
 const deleteCard = (card) => {
   confirmDeletePopup.setSavingMessage();
   api
@@ -192,14 +262,8 @@ const renderCard = (item) => {
 };
 
 /*////////////////////////////////////////////////////////////////////
-/                                                                    /
 /                          Profile                                   /
-/                                                                    /
 ////////////////////////////////////////////////////////////////////*/
-
-const profileFormElement = document.forms["edit-profile-form"];
-const editProfileName = profileFormElement.querySelector("#name");
-const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
 
 const userInfo = new UserInfo({
   userNameSelector: ".profile__name",
@@ -228,75 +292,3 @@ api
   .catch((err) => {
     console.error(`Error: ${err}`);
   });
-
-const profilePopup = new PopupWithForm({
-  popupSelector: ".profile-popup",
-  handleFormSubmit: () => {
-    const data = {
-      name: editProfileName.value,
-      about: editProfileSubtitle.value,
-    };
-    profilePopup.setSavingMessage();
-    api
-      .updateUserInfo(data)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((res) => {
-        userInfo.setUserInfo({
-          name: res["name"],
-          info: res["about"],
-          image: res["avatar"],
-          id: res["_id"],
-        });
-        profilePopup.close();
-        profilePopup.resetSubmitMessage("Save");
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
-  },
-});
-
-const editProfileButton = document.querySelector(".profile__edit-button");
-
-editProfileButton.addEventListener("click", () => {
-  const userData = userInfo.getUserInfo();
-  editProfileName.value = userData.name;
-  editProfileSubtitle.value = userData.info;
-  formValidators["edit-profile-form"].resetValidation();
-  profilePopup.open();
-});
-
-const profileImage = document.querySelector(".profile__pic");
-
-const imageChangePopup = new PopupWithForm({
-  popupSelector: ".profile-image-popup",
-  handleFormSubmit: (formData) => {
-    imageChangePopup.setSavingMessage();
-    api
-      .updateUserImage(formData["profile-image"])
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // if the server returns an error, reject the promise
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((res) => {
-        imageChangePopup.close();
-        profileImage.src = res.avatar;
-        imageChangePopup.resetSubmitMessage("Save");
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
-  },
-});
-
-profileImage.addEventListener("click", () => {
-  imageChangePopup.open();
-});

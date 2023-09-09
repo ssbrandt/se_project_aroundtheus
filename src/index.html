@@ -20,11 +20,18 @@
       </header>
       <main class="content">
         <section class="profile">
-          <img
-            src="<%=require('./images/jacques-cousteau.jpg')%>"
-            alt="Jacques Cousteau"
-            class="profile__pic"
-          />
+          <div class="profile__image">
+            <img
+              src="<%=require('./images/jacques-cousteau.jpg')%>"
+              alt="Jacques Cousteau"
+              class="profile__pic"
+            />
+            <button
+              class="profile__pic-edit"
+              type="button"
+              aria-label="edit-profile"
+            ></button>
+          </div>
           <div class="profile__content">
             <h1 class="profile__name"></h1>
             <button
@@ -178,7 +185,7 @@
                 type="url"
                 class="form__input"
                 id="profile-image"
-                placeholder="profile-image"
+                placeholder="Updated Profile Image URL"
                 name="profile-image"
                 required
               />
