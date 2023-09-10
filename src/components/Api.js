@@ -5,21 +5,15 @@ export default class Api {
   }
 
   getUserInfo() {
-    return fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
-      headers: {
-        authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
-        "Content-Type": "application/json",
-      },
+    return fetch(this._baseUrl + "/users/me", {
+      headers: this._headers,
     });
   }
 
   updateUserInfo(data) {
-    return fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
+    return fetch(this._baseUrl + "/users/me", {
       method: "PATCH",
-      headers: {
-        authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: data.name,
         about: data.about,
@@ -28,36 +22,25 @@ export default class Api {
   }
 
   updateUserImage(imageURL) {
-    return fetch(
-      "https://around-api.en.tripleten-services.com/v1/users/me/avatar",
-      {
-        method: "PATCH",
-        headers: {
-          authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          avatar: imageURL,
-        }),
-      }
-    );
+    return fetch(this._baseUrl + "/users/me/avatar", {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: imageURL,
+      }),
+    });
   }
 
   getInitialCards() {
-    return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
-      headers: {
-        authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
-      },
+    return fetch(this._baseUrl + "/cards", {
+      headers: this._headers,
     });
   }
 
   addCard(card) {
-    return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
+    return fetch(this._baseUrl + "/cards", {
       method: "POST",
-      headers: {
-        authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: card.name,
         link: card.link,
@@ -91,5 +74,7 @@ export default class Api {
     });
   }
 
-  // loadPageContent() {}
+  loadPageContent() {
+    return Promise.all([this.getInitialCards(), this.getUserInfo()]);
+  }
 }

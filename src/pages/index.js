@@ -14,7 +14,7 @@ import "./index.css";
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
   headers: {
-    authorization: "92a79377-2ddd-47c9-b759-a9f13176876d",
+    authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
     "Content-Type": "application/json",
   },
 });
@@ -28,7 +28,8 @@ const profileFormElement = document.forms["edit-profile-form"];
 const editProfileName = profileFormElement.querySelector("#name");
 const editProfileSubtitle = profileFormElement.querySelector("#subtitle");
 const editProfileButton = document.querySelector(".profile__edit-button");
-const profileImage = document.querySelector(".profile__image");
+const profileImageElement = document.querySelector(".profile__image");
+const profileImage = profileImageElement.querySelector(".profile__pic");
 
 /*////////////////////////////////////////////////////////////////////
 /                         Form Validation                            /
@@ -53,6 +54,84 @@ enableValidation(config);
 /                         Page Load                                  /
 ////////////////////////////////////////////////////////////////////*/
 
+let cardSection;
+const userInfo = new UserInfo({
+  userNameSelector: ".profile__name",
+  userInfoSelector: ".profile__subtitle",
+  userImageSelector: ".profile__pic",
+  userId: "",
+});
+
+//refactor to use loadPageContent (promise.all method)
+// api
+//   .loadPageContent()
+//   .then(([cards, userData]) => {
+//     cardSection = new Section(
+//       {
+//         items: cards,
+//         renderer: renderCard,
+//       },
+//       ".location__cards"
+//     );
+
+//     cardSection.renderItems();
+
+//     userInfo.setUserInfo({
+//       name: userData["name"],
+//       info: userData["about"],
+//       image: userData["avatar"],
+//       id: userData["_id"],
+//     });
+//   })
+//   .catch((err) => {
+//     console.log(`Error: ${err}`);
+//   });
+
+//old code that individually loads page elements--this works but doesn't use promise all
+api
+  .getInitialCards()
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error: ${res.status}`);
+  })
+  .then((cards) => {
+    cardSection = new Section(
+      {
+        items: cards,
+        renderer: renderCard,
+      },
+      ".location__cards"
+    );
+
+    cardSection.renderItems();
+  })
+  .catch((err) => {
+    console.error(`Error: ${err}`);
+  });
+
+api
+  .getUserInfo()
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    // if the server returns an error, reject the promise
+    return Promise.reject(`Error: ${res.status}`);
+  })
+  .then((res) => {
+    userInfo.setUserInfo({
+      name: res["name"],
+      info: res["about"],
+      image: res["avatar"],
+      id: res["_id"],
+    });
+  })
+  .catch((err) => {
+    console.error(`Error: ${err}`);
+  });
+
 /*////////////////////////////////////////////////////////////////////
 /                         Event Listeners                            /
 ////////////////////////////////////////////////////////////////////*/
@@ -70,7 +149,7 @@ editProfileButton.addEventListener("click", () => {
   profilePopup.open();
 });
 
-profileImage.addEventListener("click", () => {
+profileImageElement.addEventListener("click", () => {
   imageChangePopup.open();
 });
 
@@ -155,6 +234,7 @@ const imageChangePopup = new PopupWithForm({
       })
       .then((res) => {
         imageChangePopup.close();
+        console.log("updating image");
         profileImage.src = res.avatar;
         imageChangePopup.resetSubmitMessage("Save");
       })
@@ -167,32 +247,6 @@ const imageChangePopup = new PopupWithForm({
 /*////////////////////////////////////////////////////////////////////
 /                         Cards                                      /
 ////////////////////////////////////////////////////////////////////*/
-
-//new code for rendering initial cards
-let cardSection;
-
-api
-  .getInitialCards()
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Error: ${res.status}`);
-  })
-  .then((cards) => {
-    cardSection = new Section(
-      {
-        items: cards,
-        renderer: renderCard,
-      },
-      ".location__cards"
-    );
-
-    cardSection.renderItems();
-  })
-  .catch((err) => {
-    console.error(`Error: ${err}`);
-  });
 
 const likeCard = (card) => {
   api
@@ -260,35 +314,3 @@ const renderCard = (item) => {
   );
   cardSection.addItem(card.generateCard());
 };
-
-/*////////////////////////////////////////////////////////////////////
-/                          Profile                                   /
-////////////////////////////////////////////////////////////////////*/
-
-const userInfo = new UserInfo({
-  userNameSelector: ".profile__name",
-  userInfoSelector: ".profile__subtitle",
-  userImageSelector: ".profile__pic",
-  userId: "",
-});
-
-api
-  .getUserInfo()
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    // if the server returns an error, reject the promise
-    return Promise.reject(`Error: ${res.status}`);
-  })
-  .then((res) => {
-    userInfo.setUserInfo({
-      name: res["name"],
-      info: res["about"],
-      image: res["avatar"],
-      id: res["_id"],
-    });
-  })
-  .catch((err) => {
-    console.error(`Error: ${err}`);
-  });
