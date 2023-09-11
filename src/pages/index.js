@@ -76,16 +76,9 @@ api
 
     cardSection.renderItems();
 
-    userInfo.setUserInfo({
-      name: userData["name"],
-      info: userData["about"],
-      image: userData["avatar"],
-      id: userData["_id"],
-    });
+    userInfo.setUserInfo(userData);
   })
-  .catch((err) => {
-    console.log(`Error: ${err}`);
-  });
+  .catch(console.error);
 
 /*////////////////////////////////////////////////////////////////////
 /                         Event Listeners                            /
@@ -106,6 +99,7 @@ editProfileButton.addEventListener("click", () => {
 
 profileImageElement.addEventListener("click", () => {
   imageChangePopup.open();
+  formValidators["edit-image-profile-form"].resetValidation();
 });
 
 /*////////////////////////////////////////////////////////////////////
@@ -116,23 +110,23 @@ const viewImagePopup = new PopupWithImage(".view-image-popup");
 const confirmDeletePopup = new PopupWithForm({
   popupSelector: ".delete-card-popup",
   handleFormSubmit: () => {
-    deleteCard(cardElement);
+    deleteCard(cardToDelete);
   },
 });
 
 const addCardPopup = new PopupWithForm({
   popupSelector: ".add-card-popup",
   handleFormSubmit: (formData) => {
-    addCardPopup.setSavingMessage();
+    addCardPopup.renderLoading(true);
     api
       .addCard(formData)
       .then((data) => {
         renderCard(data);
         addCardPopup.close();
-        addCardPopup.resetSubmitMessage("Create");
       })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
+      .catch(console.error)
+      .finally(() => {
+        addCardPopup.renderLoading(false);
       });
   },
 });
@@ -144,39 +138,34 @@ const profilePopup = new PopupWithForm({
       name: editProfileName.value,
       about: editProfileSubtitle.value,
     };
-    profilePopup.setSavingMessage();
+    profilePopup.renderLoading(true);
     api
       .updateUserInfo(data)
       .then((res) => {
-        userInfo.setUserInfo({
-          name: res["name"],
-          info: res["about"],
-          image: res["avatar"],
-          id: res["_id"],
-        });
+        userInfo.setUserInfo(res);
         profilePopup.close();
         profilePopup.resetSubmitMessage("Save");
       })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
+      .catch(console.error)
+      .finally(() => {
+        profilePopup.renderLoading(false);
       });
   },
 });
-
+//continue here with render loading
 const imageChangePopup = new PopupWithForm({
   popupSelector: ".profile-image-popup",
   handleFormSubmit: (formData) => {
-    imageChangePopup.setSavingMessage();
+    imageChangePopup.renderLoading(true);
     api
       .updateUserImage(formData["profile-image"])
       .then((res) => {
         imageChangePopup.close();
-        console.log("updating image");
-        profileImage.src = res.avatar;
-        imageChangePopup.resetSubmitMessage("Save");
+        userInfo.setUserImage(res.avatar);
       })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
+      .catch(console.error)
+      .finally(() => {
+        imageChangePopup.renderLoading(false);
       });
   },
 });
@@ -192,32 +181,28 @@ const likeCard = (card) => {
 };
 
 const unlikeCard = (card) => {
-  api.unlikeCard(card).catch((err) => {
-    console.error(`Error: ${err}`);
-  });
+  api.unlikeCard(card).catch(console.error);
 };
 
-let cardElement;
+let cardToDelete;
 const confirmDelete = (card) => {
   confirmDeletePopup.open();
-  cardElement = card;
+  cardToDelete = card;
 };
 
 const deleteCard = (card) => {
   confirmDeletePopup.setSavingMessage();
   api
-    .deleteCard(card._cardId)
+    .deleteCard(card.cardId)
     .then((res) => {
       card.removeCard();
       confirmDeletePopup.close();
       confirmDeletePopup.resetSubmitMessage("Yes");
     })
-    .catch((err) => {
-      console.error(`Error: ${err}`);
-    });
+    .catch(console.error);
 };
 
-const renderCard = (item) => {
+function createCard(item) {
   const card = new Card(
     item,
     ".card-template",
@@ -228,5 +213,11 @@ const renderCard = (item) => {
     likeCard,
     unlikeCard
   );
-  cardSection.addItem(card.generateCard());
+
+  return card.generateCard();
+}
+
+const renderCard = (item) => {
+  const card = createCard(item);
+  cardSection.addItem(card);
 };

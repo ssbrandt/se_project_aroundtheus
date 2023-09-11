@@ -10,7 +10,7 @@ export default class Card {
     this._cardSelector = cardSelector;
     this._cardTitle = data.name;
     this._cardImage = data.link;
-    this._cardId = data["_id"];
+    this.cardId = data["_id"];
     this._isLiked = data["isLiked"];
     this._handleCardClick = handleCardClick;
     this._deleteHandler = deleteHandler;
@@ -28,16 +28,15 @@ export default class Card {
 
   _handleLike = () => {
     if (this._likeButton.classList.contains("card__like-button_active")) {
-      this._unlikeHandler(this._cardId);
+      this._unlikeHandler(this.cardId);
       this._likeButton.classList.remove("card__like-button_active");
     } else {
-      this._likeHandler(this._cardId);
+      this._likeHandler(this.cardId);
       this._likeButton.classList.add("card__like-button_active");
     }
   };
 
   _handleDelete = () => {
-    // this._deleteHandler(this._cardId);
     this._deleteHandler(this);
   };
 

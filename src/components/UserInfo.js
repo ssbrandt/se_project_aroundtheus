@@ -18,11 +18,15 @@ export default class UserInfo {
     };
   }
 
-  setUserInfo({ name, info, image, id }) {
+  setUserImage(avatar) {
+    this._userImage.src = avatar;
+  }
+
+  setUserInfo({ name, about, avatar, _id }) {
     this._userName.textContent = name;
-    this._userInfo.textContent = info;
-    this._userImage.src = image;
+    this._userInfo.textContent = about;
+    this._userImage.src = avatar;
     this._userImage.alt = `Image of ${name}`;
-    this._userId = id;
+    this._userId = _id;
   }
 }
