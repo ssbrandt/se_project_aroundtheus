@@ -63,40 +63,9 @@ const userInfo = new UserInfo({
 });
 
 //refactor to use loadPageContent (promise.all method)
-// api
-//   .loadPageContent()
-//   .then(([cards, userData]) => {
-//     cardSection = new Section(
-//       {
-//         items: cards,
-//         renderer: renderCard,
-//       },
-//       ".location__cards"
-//     );
-
-//     cardSection.renderItems();
-
-//     userInfo.setUserInfo({
-//       name: userData["name"],
-//       info: userData["about"],
-//       image: userData["avatar"],
-//       id: userData["_id"],
-//     });
-//   })
-//   .catch((err) => {
-//     console.log(`Error: ${err}`);
-//   });
-
-//old code that individually loads page elements--this works but doesn't use promise all
 api
-  .getInitialCards()
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Error: ${res.status}`);
-  })
-  .then((cards) => {
+  .loadPageContent()
+  .then(([cards, userData]) => {
     cardSection = new Section(
       {
         items: cards,
@@ -106,30 +75,16 @@ api
     );
 
     cardSection.renderItems();
-  })
-  .catch((err) => {
-    console.error(`Error: ${err}`);
-  });
 
-api
-  .getUserInfo()
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    // if the server returns an error, reject the promise
-    return Promise.reject(`Error: ${res.status}`);
-  })
-  .then((res) => {
     userInfo.setUserInfo({
-      name: res["name"],
-      info: res["about"],
-      image: res["avatar"],
-      id: res["_id"],
+      name: userData["name"],
+      info: userData["about"],
+      image: userData["avatar"],
+      id: userData["_id"],
     });
   })
   .catch((err) => {
-    console.error(`Error: ${err}`);
+    console.log(`Error: ${err}`);
   });
 
 /*////////////////////////////////////////////////////////////////////
@@ -171,12 +126,6 @@ const addCardPopup = new PopupWithForm({
     addCardPopup.setSavingMessage();
     api
       .addCard(formData)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
       .then((data) => {
         renderCard(data);
         addCardPopup.close();
@@ -198,12 +147,6 @@ const profilePopup = new PopupWithForm({
     profilePopup.setSavingMessage();
     api
       .updateUserInfo(data)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
       .then((res) => {
         userInfo.setUserInfo({
           name: res["name"],
@@ -227,12 +170,6 @@ const imageChangePopup = new PopupWithForm({
     api
       .updateUserImage(formData["profile-image"])
       .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((res) => {
         imageChangePopup.close();
         console.log("updating image");
         profileImage.src = res.avatar;
@@ -249,31 +186,15 @@ const imageChangePopup = new PopupWithForm({
 ////////////////////////////////////////////////////////////////////*/
 
 const likeCard = (card) => {
-  api
-    .likeCard(card)
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
-    })
-    .catch((err) => {
-      console.error(`Error: ${err}`);
-    });
+  api.likeCard(card).catch((err) => {
+    console.error(`Error: ${err}`);
+  });
 };
 
 const unlikeCard = (card) => {
-  api
-    .unlikeCard(card)
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
-    })
-    .catch((err) => {
-      console.error(`Error: ${err}`);
-    });
+  api.unlikeCard(card).catch((err) => {
+    console.error(`Error: ${err}`);
+  });
 };
 
 let cardElement;
@@ -287,14 +208,9 @@ const deleteCard = (card) => {
   api
     .deleteCard(card._cardId)
     .then((res) => {
-      if (res.ok) {
-        card.removeCard();
-        confirmDeletePopup.close();
-        confirmDeletePopup.resetSubmitMessage("Yes");
-        return res.json();
-      }
-      // if the server returns an error, reject the promise
-      return Promise.reject(`Error: ${res.status}`);
+      card.removeCard();
+      confirmDeletePopup.close();
+      confirmDeletePopup.resetSubmitMessage("Yes");
     })
     .catch((err) => {
       console.error(`Error: ${err}`);

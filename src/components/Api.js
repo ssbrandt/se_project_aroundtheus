@@ -4,10 +4,17 @@ export default class Api {
     this._headers = headers;
   }
 
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error: ${res.status}`);
+  }
+
   getUserInfo() {
     return fetch(this._baseUrl + "/users/me", {
       headers: this._headers,
-    });
+    }).then((res) => this._checkResponse(res));
   }
 
   updateUserInfo(data) {
@@ -18,7 +25,7 @@ export default class Api {
         name: data.name,
         about: data.about,
       }),
-    });
+    }).then((res) => this._checkResponse(res));
   }
 
   updateUserImage(imageURL) {
@@ -28,13 +35,13 @@ export default class Api {
       body: JSON.stringify({
         avatar: imageURL,
       }),
-    });
+    }).then((res) => this._checkResponse(res));
   }
 
   getInitialCards() {
     return fetch(this._baseUrl + "/cards", {
       headers: this._headers,
-    });
+    }).then((res) => this._checkResponse(res));
   }
 
   addCard(card) {
@@ -45,7 +52,7 @@ export default class Api {
         name: card.name,
         link: card.link,
       }),
-    });
+    }).then((res) => this._checkResponse(res));
   }
 
   deleteCard(cardID) {
@@ -54,7 +61,7 @@ export default class Api {
       headers: {
         authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
       },
-    });
+    }).then((res) => this._checkResponse(res));
   }
 
   likeCard(cardID) {
@@ -63,7 +70,7 @@ export default class Api {
       headers: {
         authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
       },
-    });
+    }).then((res) => this._checkResponse(res));
   }
   unlikeCard(cardID) {
     return fetch(this._baseUrl + "/cards/" + cardID + "/likes", {
@@ -71,7 +78,7 @@ export default class Api {
       headers: {
         authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
       },
-    });
+    }).then((res) => this._checkResponse(res));
   }
 
   loadPageContent() {
