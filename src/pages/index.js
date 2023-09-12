@@ -170,13 +170,23 @@ const imageChangePopup = new PopupWithForm({
 ////////////////////////////////////////////////////////////////////*/
 
 const likeCard = (card) => {
-  api.likeCard(card).catch((err) => {
-    console.error(`Error: ${err}`);
-  });
+  api
+    .likeCard(card.cardId)
+    .then(() => {
+      card.addLike();
+    })
+    .catch((err) => {
+      console.error(`Error: ${err}`);
+    });
 };
 
 const unlikeCard = (card) => {
-  api.unlikeCard(card).catch(console.error);
+  api
+    .unlikeCard(card.cardId)
+    .then(() => {
+      card.removeLike();
+    })
+    .catch(console.error);
 };
 
 let cardToDelete;

@@ -11,7 +11,7 @@ export default class Card {
     this._cardTitle = data.name;
     this._cardImage = data.link;
     this.cardId = data["_id"];
-    this._isLiked = data["isLiked"];
+    this.isLiked = data["isLiked"];
     this._handleCardClick = handleCardClick;
     this._deleteHandler = deleteHandler;
     this._likeHandler = likeHandler;
@@ -27,14 +27,22 @@ export default class Card {
   }
 
   _handleLike = () => {
-    if (this._likeButton.classList.contains("card__like-button_active")) {
-      this._unlikeHandler(this.cardId);
-      this._likeButton.classList.remove("card__like-button_active");
+    if (this.isLiked) {
+      this._unlikeHandler(this);
+      this.isLiked = false;
     } else {
-      this._likeHandler(this.cardId);
-      this._likeButton.classList.add("card__like-button_active");
+      this._likeHandler(this);
+      this.isLiked = true;
     }
   };
+
+  addLike() {
+    this._likeButton.classList.add("card__like-button_active");
+  }
+
+  removeLike() {
+    this._likeButton.classList.remove("card__like-button_active");
+  }
 
   _handleDelete = () => {
     this._deleteHandler(this);
@@ -65,8 +73,8 @@ export default class Card {
     this._cardPicture.alt = `Photo of ${this._cardTitle}`;
 
     this._likeButton = this._element.querySelector(".card__like-button");
-    if (this._isLiked) {
-      this._likeButton.classList.add("card__like-button_active");
+    if (this.isLiked) {
+      this.addLike();
     }
     this._deleteButton = this._element.querySelector(".card__delete-button");
 
