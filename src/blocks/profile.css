@@ -7,11 +7,44 @@
   display: flex;
   align-items: center;
 }
-.profile__pic {
+
+.profile__image {
   width: 120px;
   height: 120px;
-  border-radius: 50%;
+  position: relative;
   margin-right: 24px;
+}
+
+.profile__pic {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  /* margin-right: 24px; */
+}
+
+.profile__image:hover {
+  opacity: 0.8;
+  background-color: #000;
+}
+
+.profile__pic-edit {
+  background: transparent url(../images/edit-avatar.svg) no-repeat center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  margin: auto;
+  border: none;
+  position: absolute;
+  box-sizing: border-box;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  visibility: hidden;
+}
+
+.profile__image:hover .profile__pic-edit {
+  visibility: visible;
 }
 
 .profile__content {
