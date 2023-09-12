@@ -133,18 +133,13 @@ const addCardPopup = new PopupWithForm({
 
 const profilePopup = new PopupWithForm({
   popupSelector: ".profile-popup",
-  handleFormSubmit: () => {
-    const data = {
-      name: editProfileName.value,
-      about: editProfileSubtitle.value,
-    };
+  handleFormSubmit: (formData) => {
     profilePopup.renderLoading(true);
     api
-      .updateUserInfo(data)
+      .updateUserInfo(formData)
       .then((res) => {
         userInfo.setUserInfo(res);
         profilePopup.close();
-        profilePopup.resetSubmitMessage("Save");
       })
       .catch(console.error)
       .finally(() => {
