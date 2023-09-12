@@ -65,17 +65,13 @@ export default class Api {
   likeCard(cardID) {
     return fetch(this._baseUrl + "/cards/" + cardID + "/likes", {
       method: "PUT",
-      headers: {
-        authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
-      },
+      headers: this._headers,
     }).then((res) => this._checkResponse(res));
   }
   unlikeCard(cardID) {
     return fetch(this._baseUrl + "/cards/" + cardID + "/likes", {
       method: "DELETE",
-      headers: {
-        authorization: "a9ab881f-c455-4a3d-9bb8-b4ec04211711",
-      },
+      headers: this._headers,
     }).then((res) => this._checkResponse(res));
   }
 

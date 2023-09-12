@@ -196,15 +196,17 @@ const confirmDelete = (card) => {
 };
 
 const deleteCard = (card) => {
-  confirmDeletePopup.setSavingMessage();
+  confirmDeletePopup.renderLoading(true);
   api
     .deleteCard(card.cardId)
-    .then((res) => {
+    .then(() => {
       card.removeCard();
       confirmDeletePopup.close();
-      confirmDeletePopup.resetSubmitMessage("Yes");
     })
-    .catch(console.error);
+    .catch(console.error)
+    .finally(() => {
+      confirmDeletePopup.renderLoading(false);
+    });
 };
 
 function createCard(item) {
