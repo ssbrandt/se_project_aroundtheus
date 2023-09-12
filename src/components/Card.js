@@ -29,19 +29,19 @@ export default class Card {
   _handleLike = () => {
     if (this.isLiked) {
       this._unlikeHandler(this);
-      this.isLiked = false;
     } else {
       this._likeHandler(this);
-      this.isLiked = true;
     }
   };
 
   addLike() {
     this._likeButton.classList.add("card__like-button_active");
+    this.isLiked = true;
   }
 
   removeLike() {
     this._likeButton.classList.remove("card__like-button_active");
+    this.isLiked = false;
   }
 
   _handleDelete = () => {
