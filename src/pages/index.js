@@ -156,7 +156,7 @@ const imageChangePopup = new PopupWithForm({
       .updateUserImage(formData["profile-image"])
       .then((res) => {
         imageChangePopup.close();
-        userInfo.setUserImage(res.avatar);
+        userInfo.setUserInfo(res);
       })
       .catch(console.error)
       .finally(() => {
